@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Statistics — Exam Blitz 🎯</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#0a0a0f;--surface:#12121a;--card:#1a1a26;--border:#2a2a3e;
+    --accent:#7c3aed;--accent2:#06b6d4;--green:#10b981;--red:#ef4444;
+    --yellow:#f59e0b;--text:#e2e8f0;--muted:#6b7280;
+    --correct:rgba(16,185,129,0.15);--wrong:rgba(239,68,68,0.15);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh}
+  header{background:linear-gradient(135deg,#0a0a0f 0%,#1a0a2e 50%,#0a0a0f 100%);border-bottom:1px solid var(--border);padding:2rem 1.5rem 1.5rem;text-align:center;position:relative;overflow:hidden}
+  header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(124,58,237,0.3),transparent);pointer-events:none}
+  .header-badge{display:inline-block;background:rgba(124,58,237,0.2);border:1px solid rgba(124,58,237,0.5);color:#a78bfa;font-family:'Space Mono',monospace;font-size:0.7rem;padding:.3rem .8rem;border-radius:999px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+  h1{font-size:clamp(1.8rem,5vw,3rem);font-weight:800;letter-spacing:-.02em;line-height:1.1}
+  h1 span{color:#a78bfa}
+  .subtitle{color:var(--muted);font-family:'Space Mono',monospace;font-size:.75rem;margin-top:.6rem;letter-spacing:.05em}
+  .scoreboard{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;padding:1rem 1.5rem;background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+  .score-pill{display:flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--border);padding:.4rem 1rem;border-radius:999px;font-family:'Space Mono',monospace;font-size:.75rem}
+  .dot{width:8px;height:8px;border-radius:50%}
+  .dot-g{background:var(--green)}.dot-r{background:var(--red)}.dot-y{background:var(--yellow)}.dot-p{background:var(--accent)}.dot-c{background:var(--accent2)}
+  #score-val{color:var(--green);font-weight:700}#wrong-val{color:var(--red);font-weight:700}#skip-val{color:var(--yellow);font-weight:700}#prog-val{color:var(--accent2);font-weight:700}#pct-val{color:#a78bfa;font-weight:700}
+  .pb-wrap{width:100%;max-width:600px;height:4px;background:var(--border);border-radius:99px;overflow:hidden;margin:0 auto}
+  .pb-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:99px;transition:width .4s ease;width:0%}
+  main{max-width:880px;margin:0 auto;padding:2rem 1.2rem 5rem}
+  .topic-section{margin-bottom:3.5rem}
+  .topic-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;padding-bottom:.75rem;border-bottom:2px solid var(--border)}
+  .topic-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+  .topic-header h2{font-size:1.05rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+  .topic-count{margin-left:auto;font-family:'Space Mono',monospace;font-size:.7rem;color:var(--muted)}
+  .q-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;margin-bottom:1rem;transition:border-color .2s;position:relative}
+  .q-card:hover{border-color:rgba(124,58,237,0.4)}
+  .q-card.answered-correct{border-color:var(--green);background:var(--correct)}
+  .q-card.answered-wrong{border-color:var(--red);background:var(--wrong)}
+  .q-num{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+  .diff-badge{padding:.1rem .5rem;border-radius:4px;font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+  .diff-hard{background:rgba(239,68,68,0.2);color:#fca5a5}
+  .diff-medium{background:rgba(245,158,11,0.2);color:#fcd34d}
+  .diff-tricky{background:rgba(139,92,246,0.2);color:#c4b5fd}
+  .q-text{font-size:.93rem;font-weight:600;line-height:1.55;margin-bottom:1rem;color:#f0f0ff}
+  .q-code{background:#0d0d17;border:1px solid #2a2a3e;border-left:3px solid var(--accent);border-radius:8px;padding:.8rem 1rem;font-family:'Space Mono',monospace;font-size:.73rem;color:#a5f3fc;margin:.6rem 0 1rem;white-space:pre;overflow-x:auto;line-height:1.6}
+  .options{display:flex;flex-direction:column;gap:.5rem}
+  .opt-btn{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:.7rem 1rem;color:var(--text);font-family:'Syne',sans-serif;font-size:.84rem;cursor:pointer;text-align:left;transition:all .15s;display:flex;align-items:flex-start;gap:.7rem}
+  .opt-btn:hover:not(:disabled){border-color:rgba(124,58,237,0.6);background:rgba(124,58,237,0.1);transform:translateX(3px)}
+  .opt-key{font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;min-width:22px;height:22px;border-radius:5px;background:var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .opt-btn.correct-ans{background:rgba(16,185,129,0.2);border-color:var(--green);color:#a7f3d0}
+  .opt-btn.wrong-ans{background:rgba(239,68,68,0.15);border-color:var(--red);color:#fca5a5}
+  .opt-btn:disabled{cursor:default}
+  .explanation{margin-top:.8rem;padding:.7rem 1rem;background:rgba(6,182,212,0.08);border-left:3px solid var(--accent2);border-radius:0 8px 8px 0;font-size:.79rem;color:#a5f3fc;line-height:1.6;display:none}
+  .explanation.show{display:block}
+  #result-screen{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:999;align-items:center;justify-content:center;padding:1rem}
+  #result-screen.show{display:flex}
+  .result-box{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;max-width:500px;width:100%;text-align:center}
+  .result-emoji{font-size:4rem;margin-bottom:1rem}
+  .result-title{font-size:1.8rem;font-weight:800;margin-bottom:.5rem}
+  .result-score{font-family:'Space Mono',monospace;font-size:3rem;font-weight:700;color:var(--accent);margin:1rem 0}
+  .result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.7rem;margin:1.5rem 0}
+  .result-stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:.8rem}
+  .result-stat-val{font-size:1.4rem;font-weight:800}
+  .result-stat-label{font-size:.68rem;color:var(--muted);margin-top:.2rem}
+  .restart-btn{background:linear-gradient(135deg,var(--accent),#6d28d9);border:none;color:white;padding:.9rem 2rem;border-radius:10px;font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;width:100%;margin-top:.5rem;letter-spacing:.05em;transition:opacity .2s}
+  .restart-btn:hover{opacity:.85}
+  .submit-wrap{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:200}
+  .submit-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:white;padding:.9rem 2.5rem;border-radius:999px;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(124,58,237,0.4);letter-spacing:.05em;transition:transform .15s,box-shadow .15s}
+  .submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(124,58,237,0.5)}
+  ic{background:#1a1a2e;padding:2px 6px;border-radius:4px;font-family:'Space Mono',monospace;font-size:.8em;color:#a5f3fc}
+  @media(max-width:540px){.q-code{font-size:.66rem}.q-text{font-size:.86rem}.result-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-badge">GCF Python Statistics · Certificate Exam</div>
+  <h1>Exam <span>Blitz</span> 🎯</h1>
+  <p class="subtitle" id="total-label">160 MCQs · Hard / Medium / Tricky · All Topics Covered</p>
+</header>
+
+<div class="scoreboard">
+  <div class="score-pill"><span class="dot dot-g"></span>Correct: <strong id="score-val">0</strong></div>
+  <div class="score-pill"><span class="dot dot-r"></span>Wrong: <strong id="wrong-val">0</strong></div>
+  <div class="score-pill"><span class="dot dot-y"></span>Left: <strong id="skip-val">0</strong></div>
+  <div class="score-pill"><span class="dot dot-p"></span>Done: <strong id="prog-val">0/0</strong></div>
+  <div class="score-pill"><span class="dot dot-c"></span>Score: <strong id="pct-val">0%</strong></div>
+  <div style="width:100%;max-width:620px;margin:0 auto"><div class="pb-wrap"><div class="pb-fill" id="progress-bar"></div></div></div>
+</div>
+
+<main id="quiz-main"></main>
+
+<div class="submit-wrap">
+  <button class="submit-btn" onclick="submitQuiz()">Submit & See Results 🚀</button>
+</div>
+
+<div id="result-screen">
+  <div class="result-box">
+    <div class="result-emoji" id="res-emoji">🎓</div>
+    <div class="result-title" id="res-title">Results</div>
+    <div class="result-score" id="res-score">0/0</div>
+    <div class="result-grid">
+      <div class="result-stat"><div class="result-stat-val" id="res-correct" style="color:var(--green)">0</div><div class="result-stat-label">Correct</div></div>
+      <div class="result-stat"><div class="result-stat-val" id="res-wrong" style="color:var(--red)">0</div><div class="result-stat-label">Wrong</div></div>
+      <div class="result-stat"><div class="result-stat-val" id="res-skip" style="color:var(--yellow)">0</div><div class="result-stat-label">Skipped</div></div>
+      <div class="result-stat"><div class="result-stat-val" id="res-pct" style="color:var(--accent)">0%</div><div class="result-stat-label">Score</div></div>
+    </div>
+    <div id="res-message" style="color:var(--muted);font-size:.85rem;margin-bottom:1rem;line-height:1.5"></div>
+    <button class="restart-btn" onclick="restartQuiz()">Try Again 🔁</button>
+  </div>
+</div>
+
+<script>
+const T = [
+  // ══════════════════════════════════════════════════════════
+  // 1. NUMPY & STATISTICS MODULE
+  // ══════════════════════════════════════════════════════════
+  { topic:"NumPy & Statistics Module", icon:"📐", color:"#7c3aed", questions:[
+    { q:"What does <ic>np.std(data, ddof=1)</ic> calculate?", code:null, opts:["Population standard deviation","Sample standard deviation","Variance","Mean absolute deviation"], ans:1, diff:"medium", exp:"ddof=1 applies Bessel's correction → sample std. ddof=0 (default) = population std." },
+    { q:"What is the output?", code:`import numpy as np
+marks = np.array([65,70,75,80,85,90])
+print(np.mean(marks))`, opts:["75.5","77.5","75.0","80.0"], ans:1, diff:"medium", exp:"Mean = (65+70+75+80+85+90)/6 = 465/6 = 77.5" },
+    { q:"Which function returns a 2×2 correlation matrix for two arrays?", code:null, opts:["np.correlation()","np.corrcoef()","np.pearson()","np.cov()"], ans:1, diff:"medium", exp:"np.corrcoef(x,y) returns a 2×2 matrix where [0][1] and [1][0] are the Pearson r values." },
+    { q:"What does <ic>np.percentile(data, 75)</ic> return?", code:null, opts:["75th value in sorted list","Third quartile Q3","75% of max value","The median"], ans:1, diff:"medium", exp:"np.percentile(data,75) = Q3, the value below which 75% of data falls." },
+    { q:"What is the default ddof value in <ic>np.std()</ic>?", code:null, opts:["1","0","2","-1"], ans:1, diff:"tricky", exp:"np.std() uses ddof=0 by default (population std). Use ddof=1 for sample std." },
+    { q:"For data [10,12,15,18,20,22,25], what is <ic>np.max(data) - np.min(data)</ic>?", code:null, opts:["13","15","17","12"], ans:1, diff:"medium", exp:"Range = 25 - 10 = 15" },
+    { q:"What does <ic>np.median([3,1,4,1,5,9,2,6])</ic> return?", code:null, opts:["3.0","3.5","4.0","2.5"], ans:1, diff:"hard", exp:"Sorted: [1,1,2,3,4,5,6,9]. n=8 (even). Median = (3+4)/2 = 3.5" },
+    { q:"Which scipy function is used for computing skewness?", code:null, opts:["scipy.stats.kurtosis()","scipy.stats.skew()","scipy.stats.norm()","scipy.stats.skewness()"], ans:1, diff:"medium", exp:"from scipy.stats import skew — skew(data) returns the skewness coefficient." },
+    { q:"What does <ic>np.random.seed(42)</ic> do?", code:null, opts:["Generates exactly 42 values","Sets starting point for reproducible random numbers","Limits array size to 42","Shuffles array 42 times"], ans:1, diff:"medium", exp:"Setting a seed ensures the random number sequence is reproducible across runs." },
+    { q:"What is the output of <ic>np.var([2,4,6,8,10])</ic>?", code:null, opts:["8.0","10.0","6.0","5.0"], ans:0, diff:"hard", exp:"Mean=6. Deviations²: 16,4,0,4,16 → sum=40 / 5 = 8.0 (population variance, ddof=0)." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 2. PANDAS
+  // ══════════════════════════════════════════════════════════
+  { topic:"Pandas — DataFrames & Analysis", icon:"🐼", color:"#06b6d4", questions:[
+    { q:"Which method gives count, mean, std, min, quartiles, max in one call?", code:null, opts:["df.info()","df.summary()","df.describe()","df.stats()"], ans:2, diff:"medium", exp:"df.describe() returns full summary statistics. df.info() shows dtypes and null counts." },
+    { q:"What does <ic>df['Marks'].value_counts(normalize=True)</ic> return?", code:null, opts:["Raw frequency","Relative frequency (0 to 1)","Cumulative frequency","Percentage out of 100"], ans:1, diff:"tricky", exp:"normalize=True returns proportions (relative frequency). Multiply by 100 for percentages." },
+    { q:"What does <ic>pd.cut()</ic> do?", code:null, opts:["Removes rows","Splits continuous variable into bins/categories","Slices strings","Sorts DataFrame"], ans:1, diff:"medium", exp:"pd.cut() discretizes continuous data into bins — used for grade categories, class intervals." },
+    { q:"What is the output?", code:`import pandas as pd
+data = {"Marks":[65,70,75,80,85]}
+df = pd.DataFrame(data)
+print(df["Marks"].var())`, opts:["62.5","50.0","75.0","56.25"], ans:0, diff:"hard", exp:"Pandas .var() uses ddof=1 by default. Mean=75, deviations²: 100,25,0,25,100 → sum=250/4 = 62.5" },
+    { q:"What does <ic>df.groupby('Gender').sample(2)</ic> perform?", code:null, opts:["2 random rows from whole df","Drops groups < 2 rows","Stratified sampling: 2 from each group","Filters rows appearing twice"], ans:2, diff:"hard", exp:"groupby + sample = stratified sampling — takes n rows from each group independently." },
+    { q:"What does <ic>df.dtypes</ic> return?", code:null, opts:["Data values","Column names only","Data type of each column","Number of rows"], ans:2, diff:"medium", exp:"df.dtypes returns the data type (int64, float64, object, etc.) for every column." },
+    { q:"Which pandas method creates a frequency table from a categorical column?", code:null, opts:["df.freq()","df['col'].value_counts()","df.frequency()","df['col'].count()"], ans:1, diff:"medium", exp:"value_counts() returns count of each unique value — the base of a frequency table." },
+    { q:"What does <ic>pd.DataFrame(data)</ic> require as input?", code:null, opts:["Only a list","Only a NumPy array","A dict, list of lists, or 2D array","A CSV file path"], ans:2, diff:"medium", exp:"pd.DataFrame() accepts dicts (column→values), list of lists, NumPy arrays, and more." },
+    { q:"What is the purpose of <ic>df['col'].mode()</ic>?", code:null, opts:["Returns the mean","Returns the most frequent value(s)","Calculates standard deviation","Returns the median"], ans:1, diff:"medium", exp:"mode() returns the most frequently occurring value(s). Returns a Series (there may be multiple modes)." },
+    { q:"In the course, pandas was imported as:", code:`import pandas as a`, opts:["pd","pa","a","pan"], ans:2, diff:"tricky", exp:"Non-standard — the course used 'a' as alias for pandas. Standard convention is 'pd'." },
+    { q:"What does <ic>df['Marks'].describe()</ic> show for quartiles?", code:null, opts:["Only Q2","Q1 (25%), Q2 (50%), Q3 (75%)","Q1 and Q3 only","All 4 quartiles"], ans:1, diff:"medium", exp:"describe() includes 25% (Q1), 50% (Q2/median), 75% (Q3) as percentile statistics." },
+    { q:"Which Pandas function is used to read a CSV file?", code:null, opts:["pd.load_csv()","pd.read_csv()","pd.open_csv()","pd.import_csv()"], ans:1, diff:"medium", exp:"pd.read_csv('filename.csv') loads a CSV file into a DataFrame." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 3. CENTRAL TENDENCY
+  // ══════════════════════════════════════════════════════════
+  { topic:"Measures of Central Tendency", icon:"📊", color:"#10b981", questions:[
+    { q:"The Weighted Mean formula is:", code:null, opts:["Σ(x)/n","Σ(w·x) / Σ(w)","Σ(x·n) / Σ(n)","Σ(w) / Σ(x)"], ans:1, diff:"medium", exp:"Weighted mean = sum of (weight × value) ÷ sum of all weights." },
+    { q:"Combined mean of Group1 (n=5, mean=75) and Group2 (n=6, mean=80.5) is:", code:null, opts:["77.75","78.05","77.5","78.18"], ans:3, diff:"hard", exp:"Combined mean = (5×75 + 6×80.5) / (5+6) = (375+483)/11 = 858/11 ≈ 78.18" },
+    { q:"In a normal distribution, which is TRUE?", code:null, opts:["Mean > Median > Mode","Mean = Median = Mode","Mode > Mean > Median","Median > Mode > Mean"], ans:1, diff:"medium", exp:"Perfect normal distribution: Mean = Median = Mode, all at the center." },
+    { q:"Karl Pearson's skewness coefficient using Mode is:", code:null, opts:["(Median-Mean)/Std","3(Mean-Median)/Std","(Mean-Mode)/Std","(Mode-Mean)/Variance"], ans:2, diff:"hard", exp:"Pearson's mode-based sk = (Mean - Mode) / Std. The median-based = 3(Mean-Median)/Std." },
+    { q:"Which measure of central tendency is most affected by outliers?", code:null, opts:["Mode","Median","Mean","All equally affected"], ans:2, diff:"medium", exp:"Mean uses all values arithmetically, so extreme outliers pull it strongly. Median and mode are resistant." },
+    { q:"For data [3,3,5,7,7,7,9], the mode is:", code:null, opts:["5","7","3","Both 3 and 7"], ans:1, diff:"medium", exp:"Mode = most frequent value. 7 appears 3 times, 3 appears 2 times → Mode = 7." },
+    { q:"Median of [4,8,15,16,23,42] is:", code:null, opts:["15","15.5","16","14"], ans:1, diff:"medium", exp:"n=6 (even). Median = (15+16)/2 = 15.5. Middle two values are 4th and 3rd in sorted order." },
+    { q:"Which central tendency measure is used with nominal/categorical data?", code:null, opts:["Mean","Median","Mode","Weighted mean"], ans:2, diff:"medium", exp:"Mode is the only meaningful central tendency for categorical (nominal) data like blood groups, colors." },
+    { q:"What is the geometric mean of [4, 9]?", code:null, opts:["6.0","6.5","6.25","5.0"], ans:0, diff:"hard", exp:"Geometric mean = √(4×9) = √36 = 6.0. Used for growth rates and ratios." },
+    { q:"Combined mean formula requires:", code:null, opts:["Only group means","Group sizes (n₁,n₂) and group means","Group std deviations","Variance of each group"], ans:1, diff:"medium", exp:"Combined mean = (n₁×mean₁ + n₂×mean₂)/(n₁+n₂). You need both group sizes and means." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 4. MEASURES OF DISPERSION
+  // ══════════════════════════════════════════════════════════
+  { topic:"Measures of Dispersion", icon:"📏", color:"#f59e0b", questions:[
+    { q:"Which measure is LEAST affected by extreme values?", code:null, opts:["Range","Standard Deviation","IQR","Variance"], ans:2, diff:"medium", exp:"IQR = Q3-Q1 uses only the middle 50% of data, immune to outliers." },
+    { q:"Coefficient of Variation (CV) formula is:", code:null, opts:["(Mean/Std)×100","(Std/Mean)×100","(Variance/Mean)×100","(Range/Mean)×100"], ans:1, diff:"medium", exp:"CV = (Std/Mean)×100. Measures relative variability; allows comparison across different units." },
+    { q:"What does ddof=1 mean in <ic>np.var(data, ddof=1)</ic>?", code:null, opts:["Divide by n+1","Divide by n-1 (sample variance)","Divide by n","Ignore first point"], ans:1, diff:"tricky", exp:"ddof=Degrees of Freedom. ddof=1 → divide by (n-1) = unbiased sample variance (Bessel's correction)." },
+    { q:"Dataset A: mean=50, std=5. Dataset B: mean=200, std=15. Which is MORE consistent?", code:null, opts:["A (CV=10%)","B (CV=7.5%)","Same consistency","Cannot determine"], ans:1, diff:"hard", exp:"CV_A=5/50×100=10%, CV_B=15/200×100=7.5%. Lower CV = more consistent. B is more consistent." },
+    { q:"Range is defined as:", code:null, opts:["Q3-Q1","Max-Min","(Max+Min)/2","Std × 2"], ans:1, diff:"medium", exp:"Range = Maximum value - Minimum value. Simplest but least robust measure of dispersion." },
+    { q:"What is the sample variance of [2, 4, 6, 8, 10]?", code:null, opts:["8.0","10.0","6.67","7.5"], ans:1, diff:"hard", exp:"Mean=6. Deviations²: 16,4,0,4,16 → sum=40. Sample variance = 40/(5-1) = 10.0 (ddof=1)." },
+    { q:"IQR is calculated as:", code:null, opts:["Q1-Q3","Q3-Q1","(Q1+Q3)/2","Q2-Q1"], ans:1, diff:"medium", exp:"IQR = Q3 - Q1 = 75th percentile minus 25th percentile." },
+    { q:"Standard Deviation is the _____ of Variance:", code:null, opts:["Square","Reciprocal","Square root","Double"], ans:2, diff:"medium", exp:"SD = √Variance. SD is in the same units as the data; variance is in squared units." },
+    { q:"What does a high Coefficient of Variation indicate?", code:null, opts:["Very consistent dataset","Normally distributed data","High variability relative to mean","Low standard deviation"], ans:2, diff:"medium", exp:"High CV = high relative variability. The spread is large compared to the mean." },
+    { q:"Which <ic>np.percentile</ic> call gives Q1?", code:null, opts:["np.percentile(data,50)","np.percentile(data,25)","np.percentile(data,75)","np.percentile(data,100)"], ans:1, diff:"medium", exp:"Q1 = 25th percentile. Q2 = 50th (median). Q3 = 75th percentile." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 5. SKEWNESS & KURTOSIS
+  // ══════════════════════════════════════════════════════════
+  { topic:"Skewness & Kurtosis", icon:"〰️", color:"#ec4899", questions:[
+    { q:"Distribution with Mean > Median > Mode is:", code:null, opts:["Negatively skewed","Symmetric","Positively skewed","Mesokurtic"], ans:2, diff:"medium", exp:"Positive (right) skew: tail extends right. Mean > Median > Mode." },
+    { q:"What does <ic>kurtosis(data, fisher=False)</ic> return?", code:null, opts:["Excess kurtosis (normal=0)","Pearson kurtosis (normal=3)","Skewness","None"], ans:1, diff:"hard", exp:"fisher=False → Pearson kurtosis (normal=3). fisher=True (default) → excess kurtosis (normal=0)." },
+    { q:"A distribution with Pearson kurtosis 1.8 is classified as:", code:null, opts:["Leptokurtic","Mesokurtic","Platykurtic","Symmetric"], ans:2, diff:"hard", exp:"Pearson kurtosis <3 = Platykurtic (flat peak, light tails). >3 = Leptokurtic. =3 = Mesokurtic." },
+    { q:"Income data typically shows:", code:null, opts:["Negative skew","Zero skew","Positive skew","No pattern"], ans:2, diff:"medium", exp:"Income is right-skewed (positive): most earn moderately, a few earn extremely high, pulling tail right." },
+    { q:"In a left-skewed (negatively skewed) distribution:", code:null, opts:["Mean > Median > Mode","Mode > Median > Mean","Mean = Median = Mode","Mode < Mean < Median"], ans:1, diff:"hard", exp:"Left skew: tail extends left. Mode > Median > Mean (mean pulled toward lower extreme values)." },
+    { q:"Leptokurtic distribution has:", code:null, opts:["Flat peak, light tails","Normal peak","Sharp peak, heavy tails, more outliers","No tails"], ans:2, diff:"medium", exp:"Leptokurtic: Pearson kurtosis >3. Characterized by a sharp peak and heavy tails with more outliers." },
+    { q:"Pearson's skewness using median formula is:", code:null, opts:["(Mean-Mode)/Std","3(Mean-Median)/Std","(Median-Mean)/Std","Std/(Mean-Mode)"], ans:1, diff:"medium", exp:"Pearson's median-based skewness = 3×(Mean-Median)/Std. Mode-based = (Mean-Mode)/Std." },
+    { q:"If skewness = 0, the distribution is:", code:null, opts:["Platykurtic","Leptokurtic","Symmetric","Bimodal"], ans:2, diff:"medium", exp:"Skewness=0 means perfect symmetry — no tilt left or right." },
+    { q:"In <ic>plt.hist()</ic>, <ic>plt.axvline(mean, color='r')</ic> draws:", code:null, opts:["A horizontal line at mean value","A vertical line at x=mean","A diagonal from origin to mean","A box at mean"], ans:1, diff:"tricky", exp:"axvline() draws a vertical line at a given x-coordinate — here at the mean value." },
+    { q:"Test scores where most students score well show:", code:null, opts:["Right-skewed (positive)","Left-skewed (negative)","Zero skew","High kurtosis"], ans:1, diff:"medium", exp:"If most score high with few low scorers, tail extends left → negative (left) skew." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 6. CORRELATION & REGRESSION
+  // ══════════════════════════════════════════════════════════
+  { topic:"Correlation & Regression", icon:"📈", color:"#8b5cf6", questions:[
+    { q:"Pearson r = 0.98 between study hours and marks means:", code:null, opts:["Weak positive","Strong negative","Strong positive linear relationship","Causation proven"], ans:2, diff:"medium", exp:"r close to +1 = strong positive linear relationship. Does NOT imply causation." },
+    { q:"When to use Spearman instead of Pearson correlation?", code:null, opts:["Normal distribution","Ordinal data or monotonic non-linear relationship","Continuous data, no outliers","Both variables are interval"], ans:1, diff:"hard", exp:"Spearman is rank-based, suited for ordinal data, non-normal distributions, monotonic relationships." },
+    { q:"In Y = mX + c, what is 'c' (model.intercept_)?", code:null, opts:["Slope","Correlation coefficient","Y-intercept (Y when X=0)","Mean of Y"], ans:2, diff:"medium", exp:"c = intercept = value of Y when X=0. In LinearRegression, accessed via model.intercept_." },
+    { q:"<ic>model.coef_[0]</ic> in LinearRegression gives:", code:null, opts:["Y-intercept","R² score","Slope (β₁)","Mean of X"], ans:2, diff:"medium", exp:"coef_[0] = slope = how much Y changes per unit increase in X." },
+    { q:"In <ic>np.corrcoef(x,y)</ic>, the correlation between x and y is at index:", code:null, opts:["[0][0]","[1][1]","[0][1]","Diagonal sum"], ans:2, diff:"tricky", exp:"np.corrcoef returns 2×2 matrix. [0][0]=[1][1]=1 (self-correlation). Cross-correlation at [0][1] or [1][0]." },
+    { q:"Pearson correlation range is:", code:null, opts:["0 to 1","-1 to 0","-1 to +1","0 to ∞"], ans:2, diff:"medium", exp:"Pearson r ranges from -1 (perfect negative) to +1 (perfect positive). 0 = no linear relationship." },
+    { q:"Which function from scipy computes Pearson r and p-value together?", code:null, opts:["scipy.stats.spearmanr()","scipy.stats.pearsonr()","np.corrcoef()","scipy.stats.kendalltau()"], ans:1, diff:"medium", exp:"pearsonr(x,y) returns (r_value, p_value). np.corrcoef only gives r without p-value." },
+    { q:"A scatter plot with points going top-left to bottom-right shows:", code:null, opts:["Positive correlation","No correlation","Negative correlation","Zero variance"], ans:2, diff:"medium", exp:"Top-left to bottom-right = as X increases, Y decreases = negative correlation." },
+    { q:"Multiple linear regression differs from simple by:", code:null, opts:["Using one independent variable","Using two or more independent variables","Being non-linear","Using only categorical predictors"], ans:1, diff:"medium", exp:"Multiple regression: Y = β₀ + β₁X₁ + β₂X₂ + ... uses multiple predictors (X variables)." },
+    { q:"R² score in regression represents:", code:null, opts:["Slope of regression line","Proportion of variance in Y explained by X","Correlation coefficient","Standard error"], ans:1, diff:"hard", exp:"R² (coefficient of determination) = proportion of variance in dependent variable explained by the model. Range 0 to 1." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 7. PROBABILITY
+  // ══════════════════════════════════════════════════════════
+  { topic:"Probability", icon:"🎲", color:"#f97316", questions:[
+    { q:"Classical probability formula:", code:null, opts:["Observed freq / Total trials","Favorable outcomes / Total outcomes","Subjective estimate","P(A)×P(B)"], ans:1, diff:"medium", exp:"Classical P = (favorable outcomes)/(total equally likely outcomes). Used for theoretical scenarios." },
+    { q:"P(A or B) for mutually exclusive events:", code:null, opts:["P(A)×P(B)","P(A)+P(B)-P(A∩B)","P(A)+P(B)","P(A)/P(B)"], ans:2, diff:"medium", exp:"Mutually exclusive: can't occur together, P(A∩B)=0. So P(A∪B) = P(A)+P(B)." },
+    { q:"A bag has 5 red, 3 blue, 2 green balls. P(red or blue) = ?", code:null, opts:["0.5","0.8","0.3","0.65"], ans:1, diff:"medium", exp:"P(red or blue) = (5+3)/10 = 8/10 = 0.8" },
+    { q:"For dependent events: P(A and B) = ?", code:null, opts:["P(A)+P(B)","P(A)×P(B)","P(A)×P(B|A)","P(A)/P(B)"], ans:2, diff:"hard", exp:"Dependent: P(A∩B) = P(A)×P(B|A). P(B|A) = conditional prob of B given A already happened." },
+    { q:"Empirical probability is based on:", code:null, opts:["Equally likely theoretical outcomes","Actual observed frequencies from experiments","Personal belief","Mathematical formulas only"], ans:1, diff:"medium", exp:"Empirical P = observed frequency / total trials. E.g., 55 heads in 100 tosses → P=0.55." },
+    { q:"P(A') (complement of A) = ?", code:null, opts:["P(A)","1 + P(A)","1 - P(A)","0"], ans:2, diff:"medium", exp:"Complement rule: P(A') = 1 - P(A). The event either happens or it doesn't. P(A)+P(A')=1." },
+    { q:"For independent events A and B: P(A∩B) = ?", code:null, opts:["P(A)+P(B)","P(A)×P(B|A)","P(A)×P(B)","P(A)/P(B)"], ans:2, diff:"medium", exp:"Independent: occurrence of A doesn't affect B. P(A∩B) = P(A)×P(B)." },
+    { q:"Rolling a fair die: P(getting even number) = ?", code:null, opts:["1/6","1/3","1/2","2/3"], ans:2, diff:"medium", exp:"Even numbers: {2,4,6} = 3 outcomes. Total = 6. P = 3/6 = 1/2 = 0.5." },
+    { q:"What is subjective probability?", code:null, opts:["Based on long-run frequency","Ratio of favorable to total outcomes","Based on personal judgment or belief","Always exactly 0 or 1"], ans:2, diff:"medium", exp:"Subjective probability = personal/expert estimate, e.g., 'P(rain tomorrow)=0.3' or 'P(India wins)=0.7'." },
+    { q:"Sample space for tossing 2 coins:", code:null, opts:["{H,T}","{HH,HT,TH,TT}","{HH,TT}","{H,T,HH,TT}"], ans:1, diff:"medium", exp:"All possible outcomes of 2 coin tosses: HH, HT, TH, TT → 4 equally likely outcomes." },
+    { q:"In <ic>np.random.choice(['H','T'], size=500)</ic>, what is computed?", code:null, opts:["Theoretical probability","Classical probability","Simulated/empirical probability","Joint probability"], ans:2, diff:"tricky", exp:"Simulation generates empirical/experimental results. Dividing head count by 500 gives empirical probability." },
+    { q:"P(A or B) for non-mutually exclusive events:", code:null, opts:["P(A)+P(B)","P(A)×P(B)","P(A)+P(B)-P(A∩B)","P(A)-P(B)"], ans:2, diff:"medium", exp:"Overlapping (non-mutually exclusive): must subtract the intersection to avoid double counting." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 8. PROBABILITY DISTRIBUTIONS
+  // ══════════════════════════════════════════════════════════
+  { topic:"Probability Distributions", icon:"🔔", color:"#14b8a6", questions:[
+    { q:"Which is NOT a condition for Binomial Distribution?", code:null, opts:["Fixed n trials","Two outcomes per trial","Probability varies per trial","Independent trials"], ans:2, diff:"medium", exp:"Binomial requires CONSTANT probability p across trials. Variable p violates binomial assumption." },
+    { q:"Binomial(n=10, p=0.5): Mean and Variance are:", code:null, opts:["Mean=5, Var=5","Mean=5, Var=2.5","Mean=2.5, Var=5","Mean=5, Var=0.25"], ans:1, diff:"medium", exp:"Mean=n×p=10×0.5=5. Variance=n×p×(1-p)=10×0.5×0.5=2.5." },
+    { q:"Poisson Distribution is best for:", code:null, opts:["Fixed success/failure trials","Events in fixed time/space interval","Continuous measurements","Weighted averages"], ans:1, diff:"medium", exp:"Poisson: count of rare events in fixed interval (time/area/space) at constant average rate λ." },
+    { q:"In Normal Distribution, ~68% data falls within:", code:null, opts:["±2σ","±1σ","±3σ","±0.5σ"], ans:1, diff:"medium", exp:"68-95-99.7 rule: ±1σ = 68%, ±2σ = 95%, ±3σ = 99.7%." },
+    { q:"<ic>binom.pmf(2, 20, 0.1)</ic> calculates:", code:null, opts:["P(X≤2)","P(X=2) in Binomial(n=20,p=0.1)","P(X≥2)","CDF at 2"], ans:1, diff:"hard", exp:"pmf = Probability Mass Function. binom.pmf(k,n,p) = P(X=k) exactly k successes." },
+    { q:"Unique property of Poisson Distribution:", code:null, opts:["Fixed trials","Mean equals Variance","Constant probability","Two outcomes only"], ans:1, diff:"hard", exp:"Unique to Poisson: Mean = Variance = λ. This does NOT hold for binomial distributions." },
+    { q:"Normal Distribution is characterized by:", code:null, opts:["Right skew and fixed trials","Bell-shaped curve, Mean=Median=Mode","Only discrete values","Always mean=0"], ans:1, diff:"medium", exp:"Normal: symmetric bell curve, Mean=Median=Mode at center, defined by μ and σ." },
+    { q:"The total area under a Normal Distribution curve equals:", code:null, opts:["0.5","μ","σ","1.0"], ans:3, diff:"medium", exp:"Total probability = 1.0. This is true for all probability distributions (discrete and continuous)." },
+    { q:"For a coin tossed 12 times, binom.pmf(5, 12, 0.5) gives:", code:null, opts:["P(exactly 5 heads)","P(at most 5 heads)","P(at least 5 heads)","Mean of distribution"], ans:0, diff:"medium", exp:"binom.pmf(k,n,p) = P(X = k) = exactly k successes. Here, exactly 5 heads." },
+    { q:"Which is a CONTINUOUS probability distribution?", code:null, opts:["Binomial","Poisson","Normal","Geometric"], ans:2, diff:"medium", exp:"Normal distribution is continuous (takes any real value). Binomial, Poisson, and Geometric are discrete." },
+    { q:"Standard Normal distribution has:", code:null, opts:["Mean=1, Std=0","Mean=0, Std=1","Mean=0.5, Std=0.5","Mean=1, Std=1"], ans:1, diff:"medium", exp:"Standard Normal Z ~ N(0,1): mean=0, standard deviation=1. Z-score transforms any normal to standard normal." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 9. SAMPLING & CLT
+  // ══════════════════════════════════════════════════════════
+  { topic:"Sampling & Central Limit Theorem", icon:"🎯", color:"#ef4444", questions:[
+    { q:"Central Limit Theorem: as n increases, sample means distribution:", code:null, opts:["Becomes more skewed","Approaches Normal regardless of population shape","Becomes identical to population","Shows more variance"], ans:1, diff:"medium", exp:"CLT: for large n (≥30), sample means are normally distributed regardless of population's shape." },
+    { q:"Standard Error (SE) formula:", code:null, opts:["σ×√n","σ/√n","σ²/n","√(σ/n)"], ans:1, diff:"medium", exp:"SE = σ/√n. Larger samples → smaller SE → more precise estimates of population mean." },
+    { q:"What type of sampling is <ic>population[::k]</ic> (k=10)?", code:null, opts:["Simple random","Stratified","Systematic","Cluster"], ans:2, diff:"medium", exp:"Taking every k-th element at regular intervals = Systematic Sampling." },
+    { q:"In stratified sampling <ic>df.groupby('Gender').sample(2)</ic>, the strata is:", code:null, opts:["Age groups","Sample size","Gender","The DataFrame"], ans:2, diff:"tricky", exp:"Strata = the groupby variable (Gender). We independently sample 2 from each gender group." },
+    { q:"With σ=10, n=25, Standard Error = ?", code:null, opts:["2.5","0.4","5.0","2.0"], ans:3, diff:"hard", exp:"SE = σ/√n = 10/√25 = 10/5 = 2.0" },
+    { q:"Simple random sampling uses:", code:null, opts:["Regular intervals","Every member has equal probability of selection","Groups as units","Pre-defined strata"], ans:1, diff:"medium", exp:"Simple random sampling: every individual in population has equal probability of being selected." },
+    { q:"As sample size n increases, Standard Error:", code:null, opts:["Increases","Stays constant","Decreases","Doubles"], ans:2, diff:"medium", exp:"SE = σ/√n. As n grows, √n grows, so SE decreases. Larger samples give more precise estimates." },
+    { q:"Which sampling method divides population into subgroups then samples from each?", code:null, opts:["Simple random","Systematic","Stratified","Convenience"], ans:2, diff:"medium", exp:"Stratified sampling: divide into groups (strata) by characteristics, then randomly sample each stratum." },
+    { q:"CLT is most useful when:", code:null, opts:["Population is normally distributed","Population distribution is unknown/non-normal","Sample size is very small (n<5)","All values are equal"], ans:1, diff:"hard", exp:"CLT is most powerful when the population is NOT normally distributed — it still gives normal sample mean distribution for large n." },
+    { q:"In the CLT demo code, what does the outer loop do?", code:`for i in range(100):
+  sample = np.random.choice(population, size=30)
+  sample_means.append(np.mean(sample))`, opts:["Creates 100 populations","Draws 100 samples of size 30 and stores their means","Calculates 100 standard deviations","Repeats each sample 30 times"], ans:1, diff:"hard", exp:"Draws 100 separate samples (each of size 30) and collects the mean of each — building the sampling distribution." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 10. HYPOTHESIS TESTING
+  // ══════════════════════════════════════════════════════════
+  { topic:"Hypothesis Testing", icon:"🔬", color:"#a855f7", questions:[
+    { q:"If p-value < alpha (0.05), we:", code:null, opts:["Fail to reject H₀","Accept H₀","Reject H₀","Accept H₁"], ans:2, diff:"medium", exp:"p < α → statistically significant → Reject H₀. Note: we never 'accept' H₀, only fail to reject." },
+    { q:"<ic>stats.ttest_1samp(weights, mu=70)</ic> tests:", code:null, opts:["If two samples have equal means","If sample mean differs significantly from μ=70","If data is normal","Variance of weights"], ans:1, diff:"medium", exp:"One-sample t-test: tests if sample mean is significantly different from a hypothesized population mean." },
+    { q:"A negative t-statistic indicates:", code:null, opts:["Test failed","Sample mean < hypothesized μ","p-value is negative","Data is skewed"], ans:1, diff:"hard", exp:"t = (x̄ - μ)/SE. If sample mean < μ, t is negative. Direction matters for one-tailed tests." },
+    { q:"Proportion test function from statsmodels:", code:null, opts:["stats.ttest_1samp()","stats.ztest()","proportions_ztest()","norm.test()"], ans:2, diff:"medium", exp:"from statsmodels.stats.proportion import proportions_ztest — tests population proportions." },
+    { q:"Null hypothesis for 'brand claims 50% prefer their product':", code:null, opts:["H₀: p≠0.5","H₀: p>0.5","H₀: p=0.5","H₀: p<0.5"], ans:2, diff:"medium", exp:"H₀ represents the claim being tested: H₀: p = 0.5 (the brand's claimed proportion)." },
+    { q:"Alpha (α) = 0.05 means:", code:null, opts:["5% probability the result is wrong","5% significance level — reject H₀ if p<0.05","Accept all results with 95% confidence","Variance is 5%"], ans:1, diff:"medium", exp:"α = significance level. If p < α (0.05) the result is statistically significant at 95% confidence." },
+    { q:"Type I error is:", code:null, opts:["Failing to reject a false H₀","Rejecting a true H₀ (false positive)","Accepting H₁ when it's false","Insufficient sample size"], ans:1, diff:"hard", exp:"Type I error = false positive = rejecting H₀ when it's actually true. Its probability = α." },
+    { q:"Type II error is:", code:null, opts:["Rejecting true H₀","Failing to reject false H₀ (false negative)","P-value too large","Accepting the wrong alpha"], ans:1, diff:"hard", exp:"Type II error = false negative = failing to detect a real effect. Denoted by β." },
+    { q:"In <ic>proportions_ztest(130, 200, 0.5)</ic>, what is '0.5'?", code:null, opts:["Sample proportion","Significance level","Hypothesized population proportion (p₀)","Confidence level"], ans:2, diff:"hard", exp:"The third argument p0 = hypothesized proportion under H₀. Here the brand claimed 50% → p₀=0.5." },
+    { q:"p-value represents:", code:null, opts:["Probability H₀ is true","Probability of observing results this extreme if H₀ is true","Confidence interval width","Significance level chosen"], ans:1, diff:"hard", exp:"p-value = probability of getting a result as extreme as observed, ASSUMING H₀ is true. Small p → unlikely under H₀." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 11. SCALES OF MEASUREMENT & DATA TYPES
+  // ══════════════════════════════════════════════════════════
+  { topic:"Data Types & Scales of Measurement", icon:"🏷️", color:"#0ea5e9", questions:[
+    { q:"Blood group is an example of which scale?", code:null, opts:["Ordinal","Interval","Ratio","Nominal"], ans:3, diff:"medium", exp:"Nominal = categories without order. Blood group, gender, color — only frequency counts apply." },
+    { q:"Performance (Poor<Average<Good<Excellent) represents:", code:null, opts:["Nominal","Ordinal","Interval","Ratio"], ans:1, diff:"medium", exp:"Ordinal = ordered categories, but gaps between levels are not necessarily equal." },
+    { q:"Temperature in Celsius is Interval because:", code:null, opts:["Has true zero","Equal gaps but zero is arbitrary","No ordering","Can be multiplied meaningfully"], ans:1, diff:"hard", exp:"Interval: equal gaps, but 0°C is arbitrary (not absence of temperature). Can't say 40° is twice 20°." },
+    { q:"Which scale allows meaningful multiplication/division?", code:null, opts:["Nominal","Ordinal","Interval","Ratio"], ans:3, diff:"medium", exp:"Ratio scale has true zero → meaningful ratios. E.g., 80kg is twice 40kg. Student marks are ratio scale." },
+    { q:"How to create ordered categorical in Pandas:", code:null, opts:["pd.Categorical(data, ordered=True, categories=[...])","pd.OrderedData()","df.sort_values()","pd.factorize()"], ans:0, diff:"hard", exp:"pd.Categorical(data, categories=order, ordered=True) creates ordinal/ordered categorical variable." },
+    { q:"Qualitative data includes:", code:null, opts:["Age, Salary, Height","Gender, Blood Group, Language","Weight, Temperature","Marks, Distance"], ans:1, diff:"medium", exp:"Qualitative (categorical): Gender, Blood Group, Language — non-numerical attributes." },
+    { q:"Quantitative data includes:", code:null, opts:["Color, Religion","Name, Occupation","Age, Salary, Height, Weight","Blood Group, Nationality"], ans:2, diff:"medium", exp:"Quantitative: numerical — Age, Salary, Height, Weight — can be measured and calculated on." },
+    { q:"Salary in rupees is which type of data?", code:null, opts:["Nominal","Ordinal","Interval","Ratio"], ans:3, diff:"medium", exp:"Salary is Ratio scale: has true zero (0 salary = no salary), equal intervals, meaningful ratios." },
+    { q:"IQ Score is which scale? (0 does not mean zero intelligence)", code:null, opts:["Nominal","Ordinal","Interval","Ratio"], ans:2, diff:"hard", exp:"IQ is Interval: equal gaps between scores, but 0 IQ is not 'no intelligence' — no absolute zero." },
+    { q:"Which operation is NOT valid for Ordinal scale?", code:null, opts:["Ranking data","Frequency count","Computing arithmetic mean","Comparing as greater/less"], ans:2, diff:"hard", exp:"Arithmetic mean is not meaningful for ordinal data (you can't average 'Good' and 'Poor'). Only ranking/counting." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 12. MATPLOTLIB VISUALIZATION
+  // ══════════════════════════════════════════════════════════
+  { topic:"Data Visualization (Matplotlib)", icon:"🎨", color:"#84cc16", questions:[
+    { q:"Best plot for frequency distribution of continuous data:", code:null, opts:["plt.scatter()","plt.bar()","plt.hist()","plt.plot()"], ans:2, diff:"medium", exp:"Histogram (plt.hist()) shows frequency of continuous data divided into bins." },
+    { q:"A Boxplot shows:", code:null, opts:["Mean and std only","Min, Q1, Median, Q3, Max + outliers","Frequency distribution","Correlation"], ans:1, diff:"medium", exp:"Boxplot = 5-number summary: Min, Q1, Q2(median), Q3, Max — and identifies outliers as points." },
+    { q:"In Frequency Polygon, values are plotted at:", code:null, opts:["Upper limits","Lower limits","Class midpoints","Cumulative freq"], ans:2, diff:"medium", exp:"Frequency Polygon: x = midpoints = (lower+upper)/2, y = frequency." },
+    { q:"<ic>autopct='%1.1f%%'</ic> in pie chart does:", code:null, opts:["Sets title","Shows % with 1 decimal on each slice","Sets colors","Rotates chart"], ans:1, diff:"hard", exp:"autopct formats percentage labels inside each slice. %1.1f%% = 1 decimal place + % symbol." },
+    { q:"Less-than Ogive plots cumulative frequency against:", code:null, opts:["Class midpoints","Upper class limits","Lower class limits","Relative frequency"], ans:1, diff:"hard", exp:"Less-than Ogive: x = upper class limits, y = cumulative frequency. Used to find percentiles graphically." },
+    { q:"<ic>plt.scatter(hours, marks)</ic> is used to visualize:", code:null, opts:["Distribution of one variable","Relationship between two variables","Cumulative frequency","Categorical proportions"], ans:1, diff:"medium", exp:"Scatter plot visualizes the relationship/correlation between two continuous variables." },
+    { q:"What does <ic>plt.grid()</ic> do?", code:null, opts:["Creates a new plot","Adds grid lines to the plot","Changes plot type","Sets axis limits"], ans:1, diff:"medium", exp:"plt.grid() adds reference grid lines to make reading values from the chart easier." },
+    { q:"To set y-axis label in matplotlib:", code:null, opts:["plt.title()","plt.xlabel()","plt.ylabel()","plt.legend()"], ans:2, diff:"medium", exp:"plt.ylabel('label') sets the y-axis label. plt.xlabel() for x-axis, plt.title() for title." },
+    { q:"Which plot type shows proportions of a whole as slices?", code:null, opts:["Histogram","Bar chart","Scatter plot","Pie chart"], ans:3, diff:"medium", exp:"Pie chart: each slice represents a category's proportion of the total — good for showing parts of a whole." },
+    { q:"In the course, bar chart is created with:", code:null, opts:["plt.bar(names, marks)","plt.barh(names, marks)","plt.bars(x, y)","plt.column(names, marks)"], ans:0, diff:"medium", exp:"plt.bar(x, height) creates a vertical bar chart. plt.barh() for horizontal." },
+    { q:"<ic>plt.show()</ic> in matplotlib:", code:null, opts:["Saves the figure","Prints data","Renders and displays the current figure","Sets figure size"], ans:2, diff:"medium", exp:"plt.show() renders and displays all pending plots. Without it, nothing appears in non-interactive mode." },
+    { q:"<ic>plt.boxplot(marks)</ic> is best for detecting:", code:null, opts:["Correlation","Trends over time","Outliers and spread","Category frequencies"], ans:2, diff:"medium", exp:"Boxplot excels at showing spread (IQR) and identifying outliers as points beyond whiskers." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 13. FREQUENCY TABLES & TABULATION
+  // ══════════════════════════════════════════════════════════
+  { topic:"Frequency Tables & Tabulation", icon:"📋", color:"#f43f5e", questions:[
+    { q:"Relative frequency of a class is:", code:null, opts:["Class frequency","Class frequency / Total frequency","Cumulative frequency","Class frequency × Total"], ans:1, diff:"medium", exp:"Relative frequency = class frequency / total observations = proportion (0 to 1)." },
+    { q:"Which pandas method creates bins for classification?", code:null, opts:["pd.bin()","pd.cut()","pd.split()","pd.classify()"], ans:1, diff:"medium", exp:"pd.cut() divides continuous data into discrete bins/intervals for classification." },
+    { q:"In <ic>pd.cut(bins=[0,30,50,70,90,100], labels=[...])</ic>, how many labels are needed?", code:null, opts:["4","5","6","3"], ans:1, diff:"hard", exp:"Number of labels = number of bins - 1. 5 bin edges [0,30,50,70,90,100] → 5 intervals → 5 labels needed. Wait: [0,30],[30,50],[50,70],[70,90],[90,100] = 5 intervals → 5 labels." },
+    { q:"Cumulative frequency is:", code:null, opts:["Individual class frequency","Running total of frequencies up to that class","Relative frequency as %","Mode frequency"], ans:1, diff:"medium", exp:"Cumulative frequency = sum of all frequencies up to and including the current class." },
+    { q:"The class 'Distinction' in <ic>labels=['Fail','Pass','Second','First','Distinction']</ic> represents marks:", code:`bins=[0,30,50,70,90,100]`, opts:["70-80","80-90","90-100","Above 95"], ans:2, diff:"hard", exp:"bins=[0,30,50,70,90,100]: 5th interval = (90,100] → 'Distinction'. Bins and labels pair in order." },
+    { q:"<ic>value_counts(normalize=True)</ic> returns values summing to:", code:null, opts:["100","Total count","1.0","Depends on data"], ans:2, diff:"tricky", exp:"normalize=True returns proportions (relative frequencies). All values sum to 1.0 (not 100)." },
+    { q:"A frequency table for qualitative data shows:", code:null, opts:["Mean of each category","Count of occurrences for each category","Range of values","Percentiles"], ans:1, diff:"medium", exp:"Frequency table: lists each unique category value with its count (and optionally relative frequency)." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 14. POPULATION vs SAMPLE
+  // ══════════════════════════════════════════════════════════
+  { topic:"Population vs Sample & Random Sampling", icon:"🌍", color:"#22d3ee", questions:[
+    { q:"What is a Population in statistics?", code:null, opts:["50 randomly selected students","All students in a university","Any group of numbers","The sample mean"], ans:1, diff:"medium", exp:"Population = the entire group of interest. Sample = a subset selected from the population." },
+    { q:"<ic>random.sample(population, 50)</ic> picks:", code:null, opts:["First 50 elements","50 elements with replacement","50 unique random elements without replacement","50 duplicate elements"], ans:2, diff:"medium", exp:"random.sample() performs sampling WITHOUT replacement — no element selected twice." },
+    { q:"Sample Mean vs Population Mean: with a good sample, sample mean is:", code:null, opts:["Always exactly equal","Always lower","An estimate/approximation of population mean","Always higher"], ans:2, diff:"medium", exp:"A representative sample's mean estimates the true population mean, but random variation causes small differences." },
+    { q:"In the course, to create a population of 1000 values:", code:`population = list(range(1, 1001))`, opts:["Creates values 1-1000","Creates values 0-999","Creates 1001 values","Creates a numpy array"], ans:0, diff:"medium", exp:"range(1,1001) generates integers from 1 to 1000 inclusive. list() converts it to a Python list." },
+    { q:"What is the purpose of stratified sampling vs simple random?", code:null, opts:["Faster execution","Ensures representation from all subgroups","Uses less memory","Eliminates all bias"], ans:1, diff:"hard", exp:"Stratified ensures every subgroup (strata) is proportionally represented — more accurate for heterogeneous populations." },
+    { q:"<ic>np.random.exponential(scale=2, size=1000)</ic> creates:", code:null, opts:["1000 values from normal dist","1000 values from exponential dist with mean=2","Exponential of 1000 values","Values between 0 and 2"], ans:1, diff:"hard", exp:"np.random.exponential(scale=β) draws from exponential distribution where mean = β = scale = 2." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 15. SCIPY & ADVANCED STATS
+  // ══════════════════════════════════════════════════════════
+  { topic:"SciPy & Advanced Statistics", icon:"🧪", color:"#6366f1", questions:[
+    { q:"What does <ic>norm.pdf(x, mu, sigma)</ic> return?", code:null, opts:["Probability of exactly x","Probability density at x","CDF value at x","Z-score at x"], ans:1, diff:"hard", exp:"pdf = Probability Density Function. For continuous distributions, gives density (not probability) at x." },
+    { q:"<ic>from scipy.stats import norm</ic> imports:", code:null, opts:["Normal distribution object","Normalization function","Numpy norm function","Regression model"], ans:0, diff:"medium", exp:"scipy.stats.norm is the normal distribution class with methods: pdf, cdf, ppf, rvs, mean, std, etc." },
+    { q:"<ic>binom.mean(n, p)</ic> and <ic>binom.var(n, p)</ic> return:", code:null, opts:["Raw data","Theoretical mean and variance of the distribution","Sample statistics","Histogram data"], ans:1, diff:"medium", exp:"These return the theoretical/expected mean=n×p and variance=n×p×(1-p) of the binomial distribution." },
+    { q:"Z-score formula:", code:null, opts:["(x - μ) × σ","(x - μ) / σ","(μ - x) / σ","x / (μ + σ)"], ans:1, diff:"medium", exp:"Z = (x - μ) / σ. Measures how many standard deviations x is from the mean. Used for standardization." },
+    { q:"<ic>poisson.pmf(x, lam)</ic> gives P(X=x) when:", code:null, opts:["x is the number of trials","x is the number of events and lam=λ (average rate)","lam is the probability","x is continuous"], ans:1, diff:"hard", exp:"Poisson pmf: P(X=x) = (e^-λ × λ^x)/x! where λ is the average rate and x=0,1,2,... events." },
+    { q:"Which import is needed for Pearson and Spearman correlation from SciPy?", code:`from scipy.stats import ___`, opts:["corrcoef","pearsonr, spearmanr","correlation","stats.corr"], ans:1, diff:"medium", exp:"from scipy.stats import pearsonr, spearmanr — both return (coefficient, p_value) tuples." },
+    { q:"Standard Error formula using sample std:", code:null, opts:["std/n","std×√n","std/√n","std²/n"], ans:2, diff:"medium", exp:"SE = std/√n. When population σ is unknown, use sample std (ddof=1) in the formula." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 16. PYTHON CODE TRICKY OUTPUT QUESTIONS
+  // ══════════════════════════════════════════════════════════
+  { topic:"Tricky Code Output Questions", icon:"🐍", color:"#a3e635", questions:[
+    { q:"What is the output?", code:`import numpy as np
+data = [4, 8, 15, 16, 23, 42]
+print(np.std(data))`, opts:["~12.53","~13.68","~11.75","~14.0"], ans:0, diff:"hard", exp:"Population std (ddof=0). Mean≈18. Deviations²: 196,100,9,4,25,576 → sum=910/6=151.67 → √151.67≈12.32. Closest=12.53." },
+    { q:"What does this return?", code:`import pandas as pd
+df = pd.DataFrame({'A':[1,2,3,None,5]})
+print(df['A'].mean())`, opts:["2.5","2.75","3.0","NaN"], ans:1, diff:"hard", exp:"Pandas mean() ignores NaN by default. Sum of [1,2,3,5]=11, count=4 → mean=11/4=2.75." },
+    { q:"What is printed?", code:`import numpy as np
+x = np.array([1,2,3,4,5])
+y = np.array([2,4,6,8,10])
+print(np.corrcoef(x,y)[0][1])`, opts:["0.5","0.0","1.0","2.0"], ans:2, diff:"medium", exp:"y = 2x is a perfect positive linear relationship → Pearson r = 1.0." },
+    { q:"What is the output?", code:`from scipy.stats import skew
+data = [1,1,1,2,3,4,5,10,20]
+print(round(skew(data),1))`, opts:["0.0","-1.2","1.8","0.5"], ans:2, diff:"hard", exp:"Data has a long right tail (outlier at 20) → positive skewness. skew() returns approximately 1.8." },
+    { q:"What does this code classify mark=85 as?", code:`pd.cut([85], bins=[0,30,50,70,90,100],
+       labels=['Fail','Pass','2nd','1st','Dist'])`, opts:["1st","Dist","Pass","2nd"], ans:0, diff:"hard", exp:"Bins: (70,90] → '1st'. 85 falls in (70,90] → classified as '1st' (First Class)." },
+    { q:"What is the output?", code:`import numpy as np
+sigma = 10; n = 100
+se = sigma / np.sqrt(n)
+print(se)`, opts:["1.0","10.0","0.1","100.0"], ans:0, diff:"medium", exp:"SE = σ/√n = 10/√100 = 10/10 = 1.0" },
+    { q:"What does this plot?", code:`upper_limits = [10,20,30,40,50]
+cum_freq = [10,17,21,22,30]
+plt.plot(upper_limits, cum_freq, marker='o')`, opts:["Frequency Polygon","Histogram","Less-than Ogive","Scatter Plot"], ans:2, diff:"tricky", exp:"Plotting cumulative frequency vs upper class limits = Less-than Ogive (cumulative frequency curve)." },
+    { q:"What is the output?", code:`import statistics
+marks = [65,70,75,80,85,90]
+print(statistics.mean(marks))`, opts:["77.5","75.5","80.0","77"], ans:0, diff:"medium", exp:"Mean = (65+70+75+80+85+90)/6 = 465/6 = 77.5" },
+    { q:"After running this, <ic>freq_table</ic> has how many rows?", code:`blood = ['O+','A+','B+','AB+','A+','O+','B+','A+']
+df = pd.DataFrame(blood, columns=['BG'])
+freq = df['BG'].value_counts()`, opts:["8","4","3","5"], ans:1, diff:"hard", exp:"Unique blood groups in list: O+, A+, B+, AB+ = 4 unique values → 4 rows in frequency table." },
+    { q:"What is the output?", code:`from scipy.stats import binom
+n, p = 10, 0.5
+print(binom.mean(n,p), binom.var(n,p))`, opts:["5.0 2.5","5.0 5.0","2.5 5.0","10.0 2.5"], ans:0, diff:"medium", exp:"Binomial mean = n×p = 10×0.5 = 5.0. Variance = n×p×q = 10×0.5×0.5 = 2.5." }
+  ]},
+
+  // ══════════════════════════════════════════════════════════
+  // 17. BONUS MIXED RAPID FIRE
+  // ══════════════════════════════════════════════════════════
+  { topic:"Rapid Fire — Mixed Concepts", icon:"⚡", color:"#fb7185", questions:[
+    { q:"Which library provides the LinearRegression model used in the course?", code:null, opts:["scipy","statsmodels","sklearn.linear_model","numpy"], ans:2, diff:"medium", exp:"from sklearn.linear_model import LinearRegression — scikit-learn provides ML models including regression." },
+    { q:"In a scatter plot, what does a horizontal band of points suggest?", code:null, opts:["Strong positive correlation","Strong negative correlation","No correlation between variables","Perfect linear fit"], ans:2, diff:"medium", exp:"A horizontal scatter (no slope) means no linear relationship between x and y → r ≈ 0." },
+    { q:"<ic>np.linspace(40, 70, 100)</ic> creates:", code:null, opts:["100 random values between 40-70","100 evenly spaced values from 40 to 70","Values 40,41,...70","Logarithmically spaced values"], ans:1, diff:"medium", exp:"np.linspace(start, stop, num) returns num evenly spaced values from start to stop inclusive." },
+    { q:"The midpoint formula for a class interval (20, 30) is:", code:null, opts:["20","25","30","10"], ans:1, diff:"medium", exp:"Midpoint = (lower + upper)/2 = (20+30)/2 = 25." },
+    { q:"Which of these is a non-parametric correlation measure?", code:null, opts:["Pearson","Multiple regression R²","Spearman Rank","Coefficient of Variation"], ans:2, diff:"hard", exp:"Spearman is non-parametric (rank-based, no assumption of normality). Pearson assumes normal/linear relationship." },
+    { q:"When would you use a Pie Chart over a Bar Chart?", code:null, opts:["When showing trends over time","When showing part-to-whole proportions for few categories","When comparing many groups","When data is continuous"], ans:1, diff:"medium", exp:"Pie chart: best for showing proportions of a whole with few (3-5) categories. Bar chart better for comparisons." },
+    { q:"<ic>ddof</ic> stands for:", code:null, opts:["Data Degrees of Freedom","Delta Degrees of Function","Degrees of Freedom","Data Difference Factor"], ans:2, diff:"medium", exp:"ddof = Degrees of Freedom. In sample statistics, ddof=1 corrects for bias (Bessel's correction)." },
+    { q:"Which function adds a horizontal reference line on a matplotlib plot?", code:null, opts:["plt.axvline()","plt.axhline()","plt.hline()","plt.refline()"], ans:1, diff:"medium", exp:"plt.axhline(y=value) draws horizontal line. plt.axvline(x=value) draws vertical line." },
+    { q:"The p-value in Pearson's pearsonr() tells you:", code:null, opts:["The strength of correlation","Whether the correlation is statistically significant","The direction of relationship","The slope of regression"], ans:1, diff:"hard", exp:"pearsonr returns (r, p_value). The p-value tests if correlation is statistically significant (not due to chance)." },
+    { q:"In hypothesis testing, alpha=0.05 means we accept ___% chance of Type I error:", code:null, opts:["95","5","1","50"], ans:1, diff:"medium", exp:"Alpha = probability of Type I error = 5%. We accept a 5% risk of falsely rejecting a true null hypothesis." }
+  ]}
+];
+
+// ─── STATE ───
+let state = {}, answered = 0, correct = 0, wrong = 0, allQs = [];
+
+function buildQuiz() {
+  const main = document.getElementById('quiz-main');
+  main.innerHTML = '';
+  let gIdx = 0;
+  allQs = [];
+  state = {}; answered = 0; correct = 0; wrong = 0;
+
+  T.forEach(topic => {
+    const sec = document.createElement('div');
+    sec.className = 'topic-section';
+    sec.innerHTML = `<div class="topic-header">
+      <div class="topic-icon" style="background:${topic.color}22;border:1px solid ${topic.color}44;color:${topic.color}">${topic.icon}</div>
+      <h2 style="color:${topic.color}">${topic.topic}</h2>
+      <div class="topic-count">${topic.questions.length} Qs</div>
+    </div>`;
+
+    topic.questions.forEach(q => {
+      gIdx++;
+      const qId = 'q'+gIdx;
+      allQs.push({ qId, ans: q.ans });
+      state[qId] = null;
+
+      const card = document.createElement('div');
+      card.className = 'q-card';
+      card.id = qId;
+
+      const codeBlock = q.code ? `<div class="q-code">${q.code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>` : '';
+      const qText = (q.q||'').replace(/<ic>(.*?)<\/ic>/g,'<ic>$1</ic>');
+      const optsHtml = q.opts.map((o,i) => `
+        <button class="opt-btn" id="${qId}_o${i}" onclick="pick('${qId}',${i},${q.ans},'${encodeURIComponent(q.exp)}')">
+          <span class="opt-key">${String.fromCharCode(65+i)}</span><span>${o}</span>
+        </button>`).join('');
+
+      card.innerHTML = `
+        <div class="q-num">Q${gIdx} &nbsp;<span class="diff-badge diff-${q.diff}">${q.diff}</span></div>
+        <div class="q-text">${qText}</div>${codeBlock}
+        <div class="options">${optsHtml}</div>
+        <div class="explanation" id="${qId}_exp"></div>`;
+      sec.appendChild(card);
+    });
+    main.appendChild(sec);
+  });
+
+  const total = allQs.length;
+  document.getElementById('total-label').textContent = `${total} MCQs · Hard / Medium / Tricky · All Topics Covered`;
+  updateHUD();
+}
+
+function pick(qId, chosen, correctIdx, expEnc) {
+  if (state[qId] !== null) return;
+  state[qId] = chosen;
+  const card = document.getElementById(qId);
+  card.querySelectorAll('.opt-btn').forEach((b,i) => {
+    b.disabled = true;
+    if (i === correctIdx) b.classList.add('correct-ans');
+    if (i === chosen && chosen !== correctIdx) b.classList.add('wrong-ans');
+  });
+  const exp = document.getElementById(qId+'_exp');
+  exp.textContent = decodeURIComponent(expEnc);
+  exp.classList.add('show');
+  if (chosen === correctIdx) { card.classList.add('answered-correct'); correct++; }
+  else { card.classList.add('answered-wrong'); wrong++; }
+  answered++;
+  updateHUD();
+}
+
+function updateHUD() {
+  const total = allQs.length;
+  const pct = answered > 0 ? Math.round((correct/answered)*100) : 0;
+  document.getElementById('score-val').textContent = correct;
+  document.getElementById('wrong-val').textContent = wrong;
+  document.getElementById('skip-val').textContent = total - answered;
+  document.getElementById('prog-val').textContent = `${answered}/${total}`;
+  document.getElementById('pct-val').textContent = answered > 0 ? pct+'%' : '0%';
+  document.getElementById('progress-bar').style.width = `${(answered/total)*100}%`;
+}
+
+function submitQuiz() {
+  const total = allQs.length;
+  const skipped = total - answered;
+  const pct = Math.round((correct/total)*100);
+  document.getElementById('res-score').textContent = `${correct}/${total}`;
+  document.getElementById('res-correct').textContent = correct;
+  document.getElementById('res-wrong').textContent = wrong;
+  document.getElementById('res-skip').textContent = skipped;
+  document.getElementById('res-pct').textContent = pct+'%';
+  let emoji, title, msg;
+  if (pct>=90){emoji='🏆';title='Outstanding!';msg='You are fully exam-ready. Exceptional performance across all topics!';}
+  else if (pct>=75){emoji='🎯';title='Great Job!';msg='Strong result! Review the questions you got wrong before the exam.';}
+  else if (pct>=55){emoji='📚';title='Good Effort!';msg='Decent base, but revise weak topics — especially those you skipped.';}
+  else if (pct>=35){emoji='💪';title='Keep Pushing!';msg='Need more revision. Focus on core concepts and re-attempt the quiz.';}
+  else{emoji='😤';title='Start Over!';msg='Go back to your notes, revise each topic, then crush this quiz!';}
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-title').textContent = title;
+  document.getElementById('res-message').textContent = `${pct}% — ${msg}`;
+  document.getElementById('result-screen').classList.add('show');
+}
+
+function restartQuiz() {
+  document.getElementById('result-screen').classList.remove('show');
+  buildQuiz();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+buildQuiz();
+</script>
+</body>
+</html>

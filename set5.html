@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set 5 — Python Statistics Exam</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-pink">
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="header-logo"><div class="logo-mark">Py</div><span class="logo-text">Stats<span>.exam</span></span></a>
+    <div class="header-divider"></div><span class="header-title">Question Paper</span>
+    <div class="header-right"><span class="set-badge">SET · 05</span></div>
+  </div>
+</header>
+<div class="hud"><div class="hud-inner">
+  <div class="hud-stat"><span class="hud-dot" style="background:var(--green)"></span>Correct <strong id="hud-correct">0</strong></div>
+  <div class="hud-stat"><span class="hud-dot" style="background:var(--red)"></span>Wrong <strong id="hud-wrong">0</strong></div>
+  <div class="hud-stat"><span class="hud-dot" style="background:var(--yellow)"></span>Left <strong id="hud-left">40</strong></div>
+  <div class="hud-stat"><span class="hud-dot" style="background:var(--accent)"></span>Score <strong id="hud-pct">—</strong></div>
+  <div class="hud-progress"><div class="prog-track"><div class="prog-fill" id="hud-fill"></div></div><span class="prog-label" id="hud-done">0/40</span></div>
+</div></div>
+<div class="main-wrap">
+  <div class="section-header"><div class="topic-chip">📐 Topic 1</div><span class="section-title">NumPy — Advanced &amp; Tricky</span><span class="section-count">Q1–Q4</span></div>
+  <div class="q-card" id="qcard-1" data-id="1" data-correct="3">
+    <div class="q-meta"><span class="q-num">Q1</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text">What is the output?</div>
+    <div class="code-block">import numpy as np
+x = np.array([1,2,3])
+y = np.array([2,4,6])
+print(np.corrcoef(x,y)[0][1])</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('1',0)"><span class="opt-label">A</span>0.5</button>
+      <button class="opt" onclick="pickAnswer('1',1)"><span class="opt-label">B</span>0.0</button>
+      <button class="opt" onclick="pickAnswer('1',2)"><span class="opt-label">C</span>2.0</button>
+      <button class="opt" onclick="pickAnswer('1',3)"><span class="opt-label">D</span>1.0</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>y=2x is perfect positive linear → Pearson r = 1.0 exactly.</div>
+  </div>
+  <div class="q-card" id="qcard-2" data-id="2" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q2</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text"><code>np.var([5,5,5,5], ddof=0)</code> output:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('2',0)"><span class="opt-label">A</span>5.0</button>
+      <button class="opt" onclick="pickAnswer('2',1)"><span class="opt-label">B</span>20.0</button>
+      <button class="opt" onclick="pickAnswer('2',2)"><span class="opt-label">C</span>0.0</button>
+      <button class="opt" onclick="pickAnswer('2',3)"><span class="opt-label">D</span>1.0</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>All values identical → no deviation → variance = 0.</div>
+  </div>
+  <div class="q-card" id="qcard-3" data-id="3" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q3</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">What does <code>np.random.exponential(scale=2, size=1000)</code> simulate?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('3',0)"><span class="opt-label">A</span>Normal dist with μ=2</button>
+      <button class="opt" onclick="pickAnswer('3',1)"><span class="opt-label">B</span>1000 values from exponential dist with mean=2</button>
+      <button class="opt" onclick="pickAnswer('3',2)"><span class="opt-label">C</span>Uniform values 0-2</button>
+      <button class="opt" onclick="pickAnswer('3',3)"><span class="opt-label">D</span>Poisson dist</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>np.random.exponential: scale=β where mean=β. Generates exponentially distributed values.</div>
+  </div>
+  <div class="q-card" id="qcard-4" data-id="4" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q4</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text"><code>np.percentile([10,20,30,40,50], 40)</code> returns:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('4',0)"><span class="opt-label">A</span>20</button>
+      <button class="opt" onclick="pickAnswer('4',1)"><span class="opt-label">B</span>26</button>
+      <button class="opt" onclick="pickAnswer('4',2)"><span class="opt-label">C</span>22</button>
+      <button class="opt" onclick="pickAnswer('4',3)"><span class="opt-label">D</span>30</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>The 40th percentile of [10,20,30,40,50]: interpolated = 10 + 0.4×(50−10) = 10+16 = 26.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">🐼 Topic 2</div><span class="section-title">Pandas — Advanced Operations</span><span class="section-count">Q5–Q8</span></div>
+  <div class="q-card" id="qcard-5" data-id="5" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q5</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text">What does <code>df['col'].describe()</code> show for a string column?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('5',0)"><span class="opt-label">A</span>Mean and std</button>
+      <button class="opt" onclick="pickAnswer('5',1)"><span class="opt-label">B</span>count, unique, top, freq</button>
+      <button class="opt" onclick="pickAnswer('5',2)"><span class="opt-label">C</span>Quartiles</button>
+      <button class="opt" onclick="pickAnswer('5',3)"><span class="opt-label">D</span>Error — cannot describe strings</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>For object/string columns, describe() shows: count, unique (distinct values), top (most common), freq (frequency of top).</div>
+  </div>
+  <div class="q-card" id="qcard-6" data-id="6" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q6</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">How to read a CSV file into a DataFrame?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('6',0)"><span class="opt-label">A</span>pd.load_csv('file.csv')</button>
+      <button class="opt" onclick="pickAnswer('6',1)"><span class="opt-label">B</span>pd.DataFrame('file.csv')</button>
+      <button class="opt" onclick="pickAnswer('6',2)"><span class="opt-label">C</span>pd.read_csv('file.csv')</button>
+      <button class="opt" onclick="pickAnswer('6',3)"><span class="opt-label">D</span>pd.open('file.csv')</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>pd.read_csv('filename.csv') loads a CSV file. It's one of the most commonly used pandas functions.</div>
+  </div>
+  <div class="q-card" id="qcard-7" data-id="7" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q7</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text">Number of labels needed for <code>pd.cut(data, bins=[0,25,50,75,100])</code>:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('7',0)"><span class="opt-label">A</span>4</button>
+      <button class="opt" onclick="pickAnswer('7',1)"><span class="opt-label">B</span>5</button>
+      <button class="opt" onclick="pickAnswer('7',2)"><span class="opt-label">C</span>3</button>
+      <button class="opt" onclick="pickAnswer('7',3)"><span class="opt-label">D</span>6</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Bins [0,25,50,75,100] creates 4 intervals: (0,25], (25,50], (50,75], (75,100] → 4 labels.</div>
+  </div>
+  <div class="q-card" id="qcard-8" data-id="8" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q8</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text"><code>df.groupby('Gender')['Marks'].mean()</code> returns:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('8',0)"><span class="opt-label">A</span>Overall mean</button>
+      <button class="opt" onclick="pickAnswer('8',1)"><span class="opt-label">B</span>Mean marks per gender group</button>
+      <button class="opt" onclick="pickAnswer('8',2)"><span class="opt-label">C</span>List of all means</button>
+      <button class="opt" onclick="pickAnswer('8',3)"><span class="opt-label">D</span>Count per group</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>groupby + aggregation: computes mean of 'Marks' separately for each unique value in 'Gender'.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">📊 Topic 3</div><span class="section-title">Central Tendency — Edge Cases</span><span class="section-count">Q9–Q12</span></div>
+  <div class="q-card" id="qcard-9" data-id="9" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q9</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text">For bimodal data [2,3,3,5,7,7,9]: modes are?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('9',0)"><span class="opt-label">A</span>3 only</button>
+      <button class="opt" onclick="pickAnswer('9',1)"><span class="opt-label">B</span>7 only</button>
+      <button class="opt" onclick="pickAnswer('9',2)"><span class="opt-label">C</span>3 and 7 (bimodal)</button>
+      <button class="opt" onclick="pickAnswer('9',3)"><span class="opt-label">D</span>5 (median)</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>3 appears twice, 7 appears twice → bimodal distribution with two modes.</div>
+  </div>
+  <div class="q-card" id="qcard-10" data-id="10" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q10</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Mean of [−5, 0, 5, 10, 15] is:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('10',0)"><span class="opt-label">A</span>5.0</button>
+      <button class="opt" onclick="pickAnswer('10',1)"><span class="opt-label">B</span>6.0</button>
+      <button class="opt" onclick="pickAnswer('10',2)"><span class="opt-label">C</span>3.0</button>
+      <button class="opt" onclick="pickAnswer('10',3)"><span class="opt-label">D</span>7.5</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Mean = (−5+0+5+10+15)/5 = 25/5 = 5.0.</div>
+  </div>
+  <div class="q-card" id="qcard-11" data-id="11" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q11</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which measure is best for salary data with extreme outliers?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('11',0)"><span class="opt-label">A</span>Mean</button>
+      <button class="opt" onclick="pickAnswer('11',1)"><span class="opt-label">B</span>Median</button>
+      <button class="opt" onclick="pickAnswer('11',2)"><span class="opt-label">C</span>Mode</button>
+      <button class="opt" onclick="pickAnswer('11',3)"><span class="opt-label">D</span>Weighted Mean</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Median is robust to outliers. A few billionaires don't affect the median salary but they hugely inflate the mean.</div>
+  </div>
+  <div class="q-card" id="qcard-12" data-id="12" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q12</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text"><code>statistics.mean([1,2,3,4,5])</code> in Python returns type:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('12',0)"><span class="opt-label">A</span>float always</button>
+      <button class="opt" onclick="pickAnswer('12',1)"><span class="opt-label">B</span>int if result is whole number</button>
+      <button class="opt" onclick="pickAnswer('12',2)"><span class="opt-label">C</span>Fraction</button>
+      <button class="opt" onclick="pickAnswer('12',3)"><span class="opt-label">D</span>str</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>statistics.mean() always returns a float (or Fraction for integer input in Python 3.8+). For [1,2,3,4,5] → 3.0.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">📏 Topic 4</div><span class="section-title">Dispersion — All Measures</span><span class="section-count">Q13–Q16</span></div>
+  <div class="q-card" id="qcard-13" data-id="13" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q13</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text">If variance = 25, what is standard deviation?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('13',0)"><span class="opt-label">A</span>12.5</button>
+      <button class="opt" onclick="pickAnswer('13',1)"><span class="opt-label">B</span>625</button>
+      <button class="opt" onclick="pickAnswer('13',2)"><span class="opt-label">C</span>5.0</button>
+      <button class="opt" onclick="pickAnswer('13',3)"><span class="opt-label">D</span>√5</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>SD = √variance = √25 = 5.0.</div>
+  </div>
+  <div class="q-card" id="qcard-14" data-id="14" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q14</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Bessel's correction (ddof=1) is used to:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('14',0)"><span class="opt-label">A</span>Increase sample size</button>
+      <button class="opt" onclick="pickAnswer('14',1)"><span class="opt-label">B</span>Make sample variance an unbiased estimator of population variance</button>
+      <button class="opt" onclick="pickAnswer('14',2)"><span class="opt-label">C</span>Reduce computation</button>
+      <button class="opt" onclick="pickAnswer('14',3)"><span class="opt-label">D</span>Normalize data</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Dividing by (n−1) instead of n corrects for the fact that a sample underestimates population variance.</div>
+  </div>
+  <div class="q-card" id="qcard-15" data-id="15" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q15</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text">CV of dataset with mean=0 is:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('15',0)"><span class="opt-label">A</span>0%</button>
+      <button class="opt" onclick="pickAnswer('15',1)"><span class="opt-label">B</span>100%</button>
+      <button class="opt" onclick="pickAnswer('15',2)"><span class="opt-label">C</span>Infinity / undefined</button>
+      <button class="opt" onclick="pickAnswer('15',3)"><span class="opt-label">D</span>50%</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>CV = (Std/Mean)×100. If mean=0, division by zero → CV is undefined (infinite).</div>
+  </div>
+  <div class="q-card" id="qcard-16" data-id="16" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q16</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">The five-number summary in a boxplot consists of:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('16',0)"><span class="opt-label">A</span>Mean, SD, Min, Max, Range</button>
+      <button class="opt" onclick="pickAnswer('16',1)"><span class="opt-label">B</span>Min, Q1, Median, Q3, Max</button>
+      <button class="opt" onclick="pickAnswer('16',2)"><span class="opt-label">C</span>Mean, Median, Mode, Q1, Q3</button>
+      <button class="opt" onclick="pickAnswer('16',3)"><span class="opt-label">D</span>Min, Mean, Median, Max, SD</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Boxplot's five-number summary: Minimum, Q1 (25%), Median (50%), Q3 (75%), Maximum.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">〰️ Topic 5</div><span class="section-title">Shape of Distributions</span><span class="section-count">Q17–Q20</span></div>
+  <div class="q-card" id="qcard-17" data-id="17" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q17</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">House prices are typically:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('17',0)"><span class="opt-label">A</span>Symmetric (normal)</button>
+      <button class="opt" onclick="pickAnswer('17',1)"><span class="opt-label">B</span>Left-skewed</button>
+      <button class="opt" onclick="pickAnswer('17',2)"><span class="opt-label">C</span>Right-skewed (positive)</button>
+      <button class="opt" onclick="pickAnswer('17',3)"><span class="opt-label">D</span>Uniform</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>House prices: most properties are moderately priced, but a few luxury properties create a long right tail → positive skew.</div>
+  </div>
+  <div class="q-card" id="qcard-18" data-id="18" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q18</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text">Excess kurtosis of normal distribution (fisher=True) is:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('18',0)"><span class="opt-label">A</span>3</button>
+      <button class="opt" onclick="pickAnswer('18',1)"><span class="opt-label">B</span>0</button>
+      <button class="opt" onclick="pickAnswer('18',2)"><span class="opt-label">C</span>1</button>
+      <button class="opt" onclick="pickAnswer('18',3)"><span class="opt-label">D</span>−3</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Excess kurtosis = Pearson kurtosis − 3. Normal distribution: Pearson=3, excess=0.</div>
+  </div>
+  <div class="q-card" id="qcard-19" data-id="19" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q19</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text"><code>skew([10,10,10,10,100])</code> will be approximately:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('19',0)"><span class="opt-label">A</span>0 (symmetric)</button>
+      <button class="opt" onclick="pickAnswer('19',1)"><span class="opt-label">B</span>Negative (left skew)</button>
+      <button class="opt" onclick="pickAnswer('19',2)"><span class="opt-label">C</span>Positive (right skew due to outlier 100)</button>
+      <button class="opt" onclick="pickAnswer('19',3)"><span class="opt-label">D</span>Exactly 1</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Outlier 100 creates a long right tail → positive skewness. skew() returns a positive value.</div>
+  </div>
+  <div class="q-card" id="qcard-20" data-id="20" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q20</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">In a histogram, a right-skewed distribution shows:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('20',0)"><span class="opt-label">A</span>Tail extending to the left</button>
+      <button class="opt" onclick="pickAnswer('20',1)"><span class="opt-label">B</span>Symmetric bell shape</button>
+      <button class="opt" onclick="pickAnswer('20',2)"><span class="opt-label">C</span>Tail extending to the right</button>
+      <button class="opt" onclick="pickAnswer('20',3)"><span class="opt-label">D</span>Two peaks</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Right skew: peak on left side with long tail extending right toward larger values.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">📈 Topic 6</div><span class="section-title">Regression — Full Analysis</span><span class="section-count">Q21–Q24</span></div>
+  <div class="q-card" id="qcard-21" data-id="21" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q21</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text"><code>model.fit(X.reshape(-1,1), Y)</code> — what does <code>reshape(-1,1)</code> do?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('21',0)"><span class="opt-label">A</span>Makes X 2D column array (n,1) as required by sklearn</button>
+      <button class="opt" onclick="pickAnswer('21',1)"><span class="opt-label">B</span>Flattens array</button>
+      <button class="opt" onclick="pickAnswer('21',2)"><span class="opt-label">C</span>Normalizes X</button>
+      <button class="opt" onclick="pickAnswer('21',3)"><span class="opt-label">D</span>Transposes X</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>sklearn requires feature matrix X to be 2D: (n_samples, n_features). reshape(-1,1) converts 1D array to column.</div>
+  </div>
+  <div class="q-card" id="qcard-22" data-id="22" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q22</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Positive slope in linear regression means:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('22',0)"><span class="opt-label">A</span>As X increases, Y decreases</button>
+      <button class="opt" onclick="pickAnswer('22',1)"><span class="opt-label">B</span>As X increases, Y increases</button>
+      <button class="opt" onclick="pickAnswer('22',2)"><span class="opt-label">C</span>No relationship</button>
+      <button class="opt" onclick="pickAnswer('22',3)"><span class="opt-label">D</span>Perfect fit</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Positive slope (m &gt; 0): as X increases, predicted Y increases → positive relationship.</div>
+  </div>
+  <div class="q-card" id="qcard-23" data-id="23" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q23</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Multiple linear regression uses:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('23',0)"><span class="opt-label">A</span>One predictor variable</button>
+      <button class="opt" onclick="pickAnswer('23',1)"><span class="opt-label">B</span>Two or more predictor variables</button>
+      <button class="opt" onclick="pickAnswer('23',2)"><span class="opt-label">C</span>Only categorical variables</button>
+      <button class="opt" onclick="pickAnswer('23',3)"><span class="opt-label">D</span>Non-linear functions</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Multiple regression: Y = β₀ + β₁X₁ + β₂X₂ + ... uses multiple features to predict Y.</div>
+  </div>
+  <div class="q-card" id="qcard-24" data-id="24" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q24</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text">R² = 1.0 indicates:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('24',0)"><span class="opt-label">A</span>Terrible fit</button>
+      <button class="opt" onclick="pickAnswer('24',1)"><span class="opt-label">B</span>50% variance explained</button>
+      <button class="opt" onclick="pickAnswer('24',2)"><span class="opt-label">C</span>Perfect fit — model explains all variance</button>
+      <button class="opt" onclick="pickAnswer('24',3)"><span class="opt-label">D</span>Only works for linear data</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>R²=1.0 means the model perfectly explains all variance in Y. R²=0 means model explains nothing.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">🎲 Topic 7</div><span class="section-title">Probability — Comprehensive</span><span class="section-count">Q25–Q28</span></div>
+  <div class="q-card" id="qcard-25" data-id="25" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q25</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text">P(A∪B) when A and B are independent, P(A)=0.4, P(B)=0.3:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('25',0)"><span class="opt-label">A</span>0.7</button>
+      <button class="opt" onclick="pickAnswer('25',1)"><span class="opt-label">B</span>0.12</button>
+      <button class="opt" onclick="pickAnswer('25',2)"><span class="opt-label">C</span>0.58</button>
+      <button class="opt" onclick="pickAnswer('25',3)"><span class="opt-label">D</span>0.5</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>P(A∪B)=P(A)+P(B)−P(A∩B). For independent: P(A∩B)=0.4×0.3=0.12. P(A∪B)=0.4+0.3−0.12=0.58.</div>
+  </div>
+  <div class="q-card" id="qcard-26" data-id="26" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q26</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Classical probability is used for:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('26',0)"><span class="opt-label">A</span>Frequency-based experiments</button>
+      <button class="opt" onclick="pickAnswer('26',1)"><span class="opt-label">B</span>Equally likely outcomes (theoretical)</button>
+      <button class="opt" onclick="pickAnswer('26',2)"><span class="opt-label">C</span>Personal estimates</button>
+      <button class="opt" onclick="pickAnswer('26',3)"><span class="opt-label">D</span>Long-run observations</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Classical probability: theoretical scenarios with equally likely outcomes — rolling fair dice, drawing from shuffled cards.</div>
+  </div>
+  <div class="q-card" id="qcard-27" data-id="27" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q27</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text">Disjoint (mutually exclusive) events vs Independent events:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('27',0)"><span class="opt-label">A</span>Same concept</button>
+      <button class="opt" onclick="pickAnswer('27',1)"><span class="opt-label">B</span>Disjoint means P(A∩B)=0; Independent means P(A∩B)=P(A)×P(B)</button>
+      <button class="opt" onclick="pickAnswer('27',2)"><span class="opt-label">C</span>Both require P(A)=P(B)</button>
+      <button class="opt" onclick="pickAnswer('27',3)"><span class="opt-label">D</span>Independent means disjoint</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Disjoint: cannot co-occur (P(A∩B)=0). Independent: P(A∩B)=P(A)×P(B). Disjoint events are DEPENDENT (if A occurs, B cannot).</div>
+  </div>
+  <div class="q-card" id="qcard-28" data-id="28" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q28</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">If P(rain today)=0.3, P(no rain today) = ?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('28',0)"><span class="opt-label">A</span>0.3</button>
+      <button class="opt" onclick="pickAnswer('28',1)"><span class="opt-label">B</span>0.7</button>
+      <button class="opt" onclick="pickAnswer('28',2)"><span class="opt-label">C</span>0.03</button>
+      <button class="opt" onclick="pickAnswer('28',3)"><span class="opt-label">D</span>1.3</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Complement rule: P(no rain) = 1 − P(rain) = 1 − 0.3 = 0.7.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">🔔 Topic 8</div><span class="section-title">Distributions — Real Applications</span><span class="section-count">Q29–Q32</span></div>
+  <div class="q-card" id="qcard-29" data-id="29" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q29</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Binomial distribution models:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('29',0)"><span class="opt-label">A</span>Heights of 1000 people</button>
+      <button class="opt" onclick="pickAnswer('29',1)"><span class="opt-label">B</span>Number of defective items in 20 samples</button>
+      <button class="opt" onclick="pickAnswer('29',2)"><span class="opt-label">C</span>Customers per hour</button>
+      <button class="opt" onclick="pickAnswer('29',3)"><span class="opt-label">D</span>Temperature readings</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Binomial: fixed n trials, two outcomes (defective/OK), constant p → number of defectives in n samples.</div>
+  </div>
+  <div class="q-card" id="qcard-30" data-id="30" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q30</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text">For Poisson with λ=5: mean=?, variance=?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('30',0)"><span class="opt-label">A</span>Mean=2.5, Var=5</button>
+      <button class="opt" onclick="pickAnswer('30',1)"><span class="opt-label">B</span>Mean=5, Var=25</button>
+      <button class="opt" onclick="pickAnswer('30',2)"><span class="opt-label">C</span>Mean=5, Var=5</button>
+      <button class="opt" onclick="pickAnswer('30',3)"><span class="opt-label">D</span>Mean=25, Var=5</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Unique Poisson property: Mean = Variance = λ. So λ=5 → Mean=5, Variance=5.</div>
+  </div>
+  <div class="q-card" id="qcard-31" data-id="31" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q31</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text">Z-score of x=80 when μ=70 and σ=5:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('31',0)"><span class="opt-label">A</span>2.0</button>
+      <button class="opt" onclick="pickAnswer('31',1)"><span class="opt-label">B</span>0.5</button>
+      <button class="opt" onclick="pickAnswer('31',2)"><span class="opt-label">C</span>−2.0</button>
+      <button class="opt" onclick="pickAnswer('31',3)"><span class="opt-label">D</span>10.0</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Z = (x−μ)/σ = (80−70)/5 = 10/5 = 2.0.</div>
+  </div>
+  <div class="q-card" id="qcard-32" data-id="32" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q32</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which is a DISCRETE probability distribution?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('32',0)"><span class="opt-label">A</span>Normal</button>
+      <button class="opt" onclick="pickAnswer('32',1)"><span class="opt-label">B</span>Exponential</button>
+      <button class="opt" onclick="pickAnswer('32',2)"><span class="opt-label">C</span>Binomial</button>
+      <button class="opt" onclick="pickAnswer('32',3)"><span class="opt-label">D</span>Uniform (continuous)</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Binomial: discrete (counts). Normal, Exponential, Continuous Uniform: continuous distributions.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">🎯 Topic 9</div><span class="section-title">Sampling — Advanced Concepts</span><span class="section-count">Q33–Q36</span></div>
+  <div class="q-card" id="qcard-33" data-id="33" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q33</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text">Population has 1000 values. SE with σ=50, n=100 = ?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('33',0)"><span class="opt-label">A</span>0.5</button>
+      <button class="opt" onclick="pickAnswer('33',1)"><span class="opt-label">B</span>5.0</button>
+      <button class="opt" onclick="pickAnswer('33',2)"><span class="opt-label">C</span>50.0</button>
+      <button class="opt" onclick="pickAnswer('33',3)"><span class="opt-label">D</span>500.0</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>SE = σ/√n = 50/√100 = 50/10 = 5.0.</div>
+  </div>
+  <div class="q-card" id="qcard-34" data-id="34" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q34</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Cluster sampling selects:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('34',0)"><span class="opt-label">A</span>Every k-th element</button>
+      <button class="opt" onclick="pickAnswer('34',1)"><span class="opt-label">B</span>Entire groups (clusters) randomly</button>
+      <button class="opt" onclick="pickAnswer('34',2)"><span class="opt-label">C</span>Samples from each stratum</button>
+      <button class="opt" onclick="pickAnswer('34',3)"><span class="opt-label">D</span>Only random elements</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Cluster sampling: divide population into clusters (e.g., cities), randomly select whole clusters, study everyone in them.</div>
+  </div>
+  <div class="q-card" id="qcard-35" data-id="35" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q35</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text">Why use random_state in <code>df.groupby('Gender').sample(2, random_state=1)</code>?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('35',0)"><span class="opt-label">A</span>To make sampling faster</button>
+      <button class="opt" onclick="pickAnswer('35',1)"><span class="opt-label">B</span>For reproducible results — same sample every run</button>
+      <button class="opt" onclick="pickAnswer('35',2)"><span class="opt-label">C</span>To increase sample size</button>
+      <button class="opt" onclick="pickAnswer('35',3)"><span class="opt-label">D</span>To sort by gender</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>random_state is a seed for reproducibility. Same seed → same sample selected every time code runs.</div>
+  </div>
+  <div class="q-card" id="qcard-36" data-id="36" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q36</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which Python module provides <code>random.sample()</code>?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('36',0)"><span class="opt-label">A</span>numpy</button>
+      <button class="opt" onclick="pickAnswer('36',1)"><span class="opt-label">B</span>pandas</button>
+      <button class="opt" onclick="pickAnswer('36',2)"><span class="opt-label">C</span>random (built-in)</button>
+      <button class="opt" onclick="pickAnswer('36',3)"><span class="opt-label">D</span>scipy</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Built-in Python module 'random' provides random.sample(). numpy uses np.random.choice() for similar purpose.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">🔬 Topic 10</div><span class="section-title">Complete Review — All Topics</span><span class="section-count">Q37–Q40</span></div>
+  <div class="q-card" id="qcard-37" data-id="37" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q37</span><span class="diff-pill diff-hard">Hard</span></div>
+    <div class="q-text"><code>stats.ttest_1samp([27,56,78,90,34,53,67], mu=70)</code>: negative t-stat means:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('37',0)"><span class="opt-label">A</span>Test invalid</button>
+      <button class="opt" onclick="pickAnswer('37',1)"><span class="opt-label">B</span>p &lt; α always</button>
+      <button class="opt" onclick="pickAnswer('37',2)"><span class="opt-label">C</span>Sample mean &lt; hypothesized μ=70</button>
+      <button class="opt" onclick="pickAnswer('37',3)"><span class="opt-label">D</span>Data not normal</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>t = (x̄−μ)/SE. If sample mean &lt; 70, t is negative. Direction matters for one-tailed tests.</div>
+  </div>
+  <div class="q-card" id="qcard-38" data-id="38" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q38</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Frequency Polygon plots frequency against:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('38',0)"><span class="opt-label">A</span>Upper class limits</button>
+      <button class="opt" onclick="pickAnswer('38',1)"><span class="opt-label">B</span>Raw data values</button>
+      <button class="opt" onclick="pickAnswer('38',2)"><span class="opt-label">C</span>Class midpoints</button>
+      <button class="opt" onclick="pickAnswer('38',3)"><span class="opt-label">D</span>Cumulative frequency</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Frequency Polygon: x-axis = class midpoints = (lower+upper)/2, y-axis = frequency. Then connect with lines.</div>
+  </div>
+  <div class="q-card" id="qcard-39" data-id="39" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q39</span><span class="diff-pill diff-tricky">Tricky</span></div>
+    <div class="q-text"><code>a.Categorical(df['Performance'], categories=order, ordered=True)</code> enables:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('39',0)"><span class="opt-label">A</span>Sorting alphabetically</button>
+      <button class="opt" onclick="pickAnswer('39',1)"><span class="opt-label">B</span>Computing arithmetic mean</button>
+      <button class="opt" onclick="pickAnswer('39',2)"><span class="opt-label">C</span>Proper ordering and comparison of categories</button>
+      <button class="opt" onclick="pickAnswer('39',3)"><span class="opt-label">D</span>Converting to numbers</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>ordered=True on Categorical creates true ordinal variable — allows &gt;, &lt; comparisons and correct min/max.</div>
+  </div>
+  <div class="q-card" id="qcard-40" data-id="40" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q40</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">After running all 5 exam sets, your best strategy for exam day is:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('40',0)"><span class="opt-label">A</span>Memorize all answers</button>
+      <button class="opt" onclick="pickAnswer('40',1)"><span class="opt-label">B</span>Understand the WHY behind each concept</button>
+      <button class="opt" onclick="pickAnswer('40',2)"><span class="opt-label">C</span>Skip hard questions</button>
+      <button class="opt" onclick="pickAnswer('40',3)"><span class="opt-label">D</span>Focus only on matplotlib</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Understanding concepts beats memorization. On MCQ exams, logical reasoning from principles is more reliable than rote memory.</div>
+  </div>
+</div>
+<div class="fab-wrap">
+  <button class="fab-btn" id="btn-submit">Submit Exam →</button>
+  <a href="index.html" class="fab-btn secondary">← All Sets</a>
+</div>
+<div class="modal-overlay" id="result-modal">
+  <div class="modal-box">
+    <div class="modal-emoji" id="res-emoji">🎓</div>
+    <div class="modal-title" id="res-title">Results</div>
+    <div class="modal-set">Set 05 — Python Statistics</div>
+    <div class="score-ring-wrap"><div class="score-ring"><div class="score-pct" id="res-score-pct">0%</div><div class="score-label" id="res-score-num">0/40</div></div></div>
+    <div class="stats-row">
+      <div class="stat-cell"><div class="stat-val" id="res-correct" style="color:var(--green)">0</div><div class="stat-label">Correct</div></div>
+      <div class="stat-cell"><div class="stat-val" id="res-wrong" style="color:var(--red)">0</div><div class="stat-label">Wrong</div></div>
+      <div class="stat-cell"><div class="stat-val" id="res-skip" style="color:var(--yellow)">0</div><div class="stat-label">Skipped</div></div>
+    </div>
+    <div class="modal-message" id="res-message"></div>
+    <div class="modal-actions">
+      <button class="modal-btn modal-btn-primary" id="btn-restart">↩ Try Again</button>
+      <a href="index.html" class="modal-btn modal-btn-secondary">🏠 Home</a>
+    </div>
+  </div>
+</div>
+<script src="quiz.js"></script>
+</body>
+</html>

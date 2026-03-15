@@ -14,7 +14,32 @@
 
   // ── Init ──
   function init() {
-    const cards = document.querySelectorAll('.q-card[data-id]');
+    let cards = document.querySelectorAll('.q-card[data-id]');
+    
+    // Shuffle questions logic
+    const mainWrap = document.querySelector('.main-wrap');
+    if (mainWrap && cards.length > 0) {
+      // Hide section headers since questions will be mixed
+      document.querySelectorAll('.section-header').forEach(h => h.style.display = 'none');
+      
+      const cardsArray = Array.from(cards);
+      // Fisher-Yates shuffle
+      for (let i = cardsArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cardsArray[i], cardsArray[j]] = [cardsArray[j], cardsArray[i]];
+      }
+      
+      // Re-append in mixed order and update Q numbers
+      cardsArray.forEach((card, index) => {
+        const qNum = card.querySelector('.q-num');
+        if (qNum) qNum.textContent = 'Q' + (index + 1);
+        mainWrap.appendChild(card);
+      });
+      
+      // Re-select cards in the new DOM order for consistency if needed
+      cards = document.querySelectorAll('.q-card[data-id]');
+    }
+
     total = cards.length;
     cards.forEach(card => {
       state[card.dataset.id] = null;

@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set 6 — Python Statistics Exam</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-purple">
+<header class="site-header">
+  <div class="header-inner">
+    <a href="index.html" class="header-logo"><div class="logo-mark">Py</div><span class="logo-text">Stats<span>.exam</span></span></a>
+    <div class="header-divider"></div><span class="header-title">Question Paper</span>
+    <div class="header-right"><span class="set-badge">SET · 06</span></div>
+  </div>
+</header>
+<div class="hud"><div class="hud-inner">
+  <div class="hud-stat"><span class="hud-dot" style="background:var(--green)"></span>Correct <strong id="hud-correct">0</strong></div>
+  <div class="hud-stat"><span class="hud-dot" style="background:var(--red)"></span>Wrong <strong id="hud-wrong">0</strong></div>
+  <div class="hud-stat"><span class="hud-dot" style="background:var(--yellow)"></span>Left <strong id="hud-left">35</strong></div>
+  <div class="hud-stat"><span class="hud-dot" style="background:var(--accent)"></span>Score <strong id="hud-pct">—</strong></div>
+  <div class="hud-progress"><div class="prog-track"><div class="prog-fill" id="hud-fill"></div></div><span class="prog-label" id="hud-done">0/35</span></div>
+</div></div>
+<div class="main-wrap">
+  <div class="section-header"><div class="topic-chip">📊 Topic 1</div><span class="section-title">Statistics Fundamentals</span><span class="section-count">Q1–Q7</span></div>
+  <div class="q-card" id="qcard-1" data-id="1" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q1</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which one of the following is not an example of statistics?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('1',0)"><span class="opt-label">A</span>The sweet smell of success</button>
+      <button class="opt" onclick="pickAnswer('1',1)"><span class="opt-label">B</span>Monthly housing prices in a city</button>
+      <button class="opt" onclick="pickAnswer('1',2)"><span class="opt-label">C</span>Traffic noise at a busy intersection</button>
+      <button class="opt" onclick="pickAnswer('1',3)"><span class="opt-label">D</span>Annual unemployment rate in a country</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Statistics involves numerical data collection and analysis. "Sweet smell of success" is subjective, not measurable data.</div>
+  </div>
+  <div class="q-card" id="qcard-2" data-id="2" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q2</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which of the following statements is true? One can estimate the votes for a presidential candidate in a forthcoming election by:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('2',0)"><span class="opt-label">A</span>Asking your barber</button>
+      <button class="opt" onclick="pickAnswer('2',1)"><span class="opt-label">B</span>Conducting a poll of a random sample of the voting age population</button>
+      <button class="opt" onclick="pickAnswer('2',2)"><span class="opt-label">C</span>Asking your favourite university professor about who is going to win</button>
+      <button class="opt" onclick="pickAnswer('2',3)"><span class="opt-label">D</span>Asking the cab drivers in a city of their vote preference</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Random sampling provides representative data for statistical inference about the entire population.</div>
+  </div>
+  <div class="q-card" id="qcard-3" data-id="3" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q3</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which of the following is not a type of data visualization? (Pick the most appropriate answer)</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('3',0)"><span class="opt-label">A</span>An organization chart</button>
+      <button class="opt" onclick="pickAnswer('3',1)"><span class="opt-label">B</span>A pie chart</button>
+      <button class="opt" onclick="pickAnswer('3',2)"><span class="opt-label">C</span>A time series plot</button>
+      <button class="opt" onclick="pickAnswer('3',3)"><span class="opt-label">D</span>A bar chart</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Organization charts show hierarchical relationships, not statistical data patterns or distributions.</div>
+  </div>
+  <div class="q-card" id="qcard-4" data-id="4" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q4</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which of the following is not a cross-sectional data set?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('4',0)"><span class="opt-label">A</span>Monthly survey of consumer confidence</button>
+      <button class="opt" onclick="pickAnswer('4',1)"><span class="opt-label">B</span>National Census conducted every 5 or 10 years</button>
+      <button class="opt" onclick="pickAnswer('4',2)"><span class="opt-label">C</span>Weekly data on average temperature</button>
+      <button class="opt" onclick="pickAnswer('4',3)"><span class="opt-label">D</span>A survey of student satisfaction conducted at the end of the course</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Cross-sectional data captures a single point in time. Weekly temperature data is time series (collected over time).</div>
+  </div>
+  <div class="q-card" id="qcard-5" data-id="5" data-correct="3">
+    <div class="q-meta"><span class="q-num">Q5</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which of the following is an example of time series data?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('5',0)"><span class="opt-label">A</span>Number of dolphins in the Pacific Ocean</button>
+      <button class="opt" onclick="pickAnswer('5',1)"><span class="opt-label">B</span>Average batting average of a baseball player</button>
+      <button class="opt" onclick="pickAnswer('5',2)"><span class="opt-label">C</span>Number of trees in Jardin du Luxemburg in Paris</button>
+      <button class="opt" onclick="pickAnswer('5',3)"><span class="opt-label">D</span>Annual average housing price in New York</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Time series data involves observations collected sequentially over time. Annual housing prices track changes over years.</div>
+  </div>
+  <div class="q-card" id="qcard-6" data-id="6" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q6</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which of the following is an example of multivariate data?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('6',0)"><span class="opt-label">A</span>Vital signs recorded for a new born baby</button>
+      <button class="opt" onclick="pickAnswer('6',1)"><span class="opt-label">B</span>Number of songs played in a day by your favourite radio station</button>
+      <button class="opt" onclick="pickAnswer('6',2)"><span class="opt-label">C</span>Daily temperature recorded by a monitoring station in Antarctica</button>
+      <button class="opt" onclick="pickAnswer('6',3)"><span class="opt-label">D</span>Number of words spoken by President Donald Trump in his inaugural speech</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Multivariate data involves multiple variables. Vital signs include heart rate, blood pressure, temperature, etc.</div>
+  </div>
+  <div class="q-card" id="qcard-7" data-id="7" data-correct="3">
+    <div class="q-meta"><span class="q-num">Q7</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">What is a suitable way to display the average income earned by men and women in a city?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('7',0)"><span class="opt-label">A</span>A scatter plot</button>
+      <button class="opt" onclick="pickAnswer('7',1)"><span class="opt-label">B</span>A pie chart</button>
+      <button class="opt" onclick="pickAnswer('7',2)"><span class="opt-label">C</span>A histogram</button>
+      <button class="opt" onclick="pickAnswer('7',3)"><span class="opt-label">D</span>A bar chart</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Bar charts are ideal for comparing categorical data (gender) with numerical values (average income).</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">📈 Topic 2</div><span class="section-title">Data Visualization & Analysis</span><span class="section-count">Q8–Q14</span></div>
+  <div class="q-card" id="qcard-8" data-id="8" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q8</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">What is a suitable way to display relationship between two continuous variables?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('8',0)"><span class="opt-label">A</span>A scatter plot</button>
+      <button class="opt" onclick="pickAnswer('8',1)"><span class="opt-label">B</span>A pie chart</button>
+      <button class="opt" onclick="pickAnswer('8',2)"><span class="opt-label">C</span>A histogram</button>
+      <button class="opt" onclick="pickAnswer('8',3)"><span class="opt-label">D</span>A bar chart</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Scatter plots show the relationship and correlation between two continuous variables effectively.</div>
+  </div>
+  <div class="q-card" id="qcard-9" data-id="9" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q9</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">What's the best way to display median and outliers?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('9',0)"><span class="opt-label">A</span>A bubble chart</button>
+      <button class="opt" onclick="pickAnswer('9',1)"><span class="opt-label">B</span>A time series plot</button>
+      <button class="opt" onclick="pickAnswer('9',2)"><span class="opt-label">C</span>A box plot</button>
+      <button class="opt" onclick="pickAnswer('9',3)"><span class="opt-label">D</span>A scatter plot</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Box plots (box-and-whisker plots) are specifically designed to show median, quartiles, and outliers.</div>
+  </div>
+  <div class="q-card" id="qcard-10" data-id="10" data-correct="3">
+    <div class="q-meta"><span class="q-num">Q10</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">What is the best way to display daily temperature for a city?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('10',0)"><span class="opt-label">A</span>A histogram</button>
+      <button class="opt" onclick="pickAnswer('10',1)"><span class="opt-label">B</span>A pie chart</button>
+      <button class="opt" onclick="pickAnswer('10',2)"><span class="opt-label">C</span>A Box plot</button>
+      <button class="opt" onclick="pickAnswer('10',3)"><span class="opt-label">D</span>A line plot</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Line plots are ideal for showing trends and patterns in time series data like daily temperatures.</div>
+  </div>
+  <div class="q-card" id="qcard-11" data-id="11" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q11</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">What extra step is needed to display two related time series variables that differ greatly in magnitude?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('11',0)"><span class="opt-label">A</span>Use two axes to display the lines</button>
+      <button class="opt" onclick="pickAnswer('11',1)"><span class="opt-label">B</span>Plot them by colouring the lines with different colours</button>
+      <button class="opt" onclick="pickAnswer('11',2)"><span class="opt-label">C</span>Plot the lines with different thickness</button>
+      <button class="opt" onclick="pickAnswer('11',3)"><span class="opt-label">D</span>Plot them separately in two charts</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Dual y-axes allow plotting variables with different scales on the same chart for comparison.</div>
+  </div>
+  <div class="q-card" id="qcard-12" data-id="12" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q12</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">When the sum of two or more categories equals 100, what chart type is ideally suited for displaying data?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('12',0)"><span class="opt-label">A</span>A line chart</button>
+      <button class="opt" onclick="pickAnswer('12',1)"><span class="opt-label">B</span>A pie chart</button>
+      <button class="opt" onclick="pickAnswer('12',2)"><span class="opt-label">C</span>A box plot</button>
+      <button class="opt" onclick="pickAnswer('12',3)"><span class="opt-label">D</span>A histogram</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Pie charts are perfect for showing parts of a whole when categories sum to 100%.</div>
+  </div>
+  <div class="q-card" id="qcard-13" data-id="13" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q13</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">When using sample data with weights, it is important to compute statistics by:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('13',0)"><span class="opt-label">A</span>Filtering the data with the weight variable</button>
+      <button class="opt" onclick="pickAnswer('13',1)"><span class="opt-label">B</span>Weighting the data with the appropriate variable</button>
+      <button class="opt" onclick="pickAnswer('13',2)"><span class="opt-label">C</span>Ignoring the weights</button>
+      <button class="opt" onclick="pickAnswer('13',3)"><span class="opt-label">D</span>None of the above</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Weights adjust the influence of each observation to represent the population accurately.</div>
+  </div>
+  <div class="q-card" id="qcard-14" data-id="14" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q14</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">When multiple observations are reported for each respondent in the data set, to compute statistics for variables about the respondents, one must:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('14',0)"><span class="opt-label">A</span>Ignore the presence of duplicates and compute statistics as usual</button>
+      <button class="opt" onclick="pickAnswer('14',1)"><span class="opt-label">B</span>Weight data by duplicates</button>
+      <button class="opt" onclick="pickAnswer('14',2)"><span class="opt-label">C</span>Remove duplicates before running analysis</button>
+      <button class="opt" onclick="pickAnswer('14',3)"><span class="opt-label">D</span>None of the above</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Duplicates would bias results. Each respondent should be counted once for person-level statistics.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">🔧 Topic 3</div><span class="section-title">Statistical Computing</span><span class="section-count">Q15–Q21</span></div>
+  <div class="q-card" id="qcard-15" data-id="15" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q15</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">To be able to trace one's steps, one must:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('15',0)"><span class="opt-label">A</span>Generate and record syntax for every command executed for the analysis</button>
+      <button class="opt" onclick="pickAnswer('15',1)"><span class="opt-label">B</span>Note steps taken for the analyses in a notebook</button>
+      <button class="opt" onclick="pickAnswer('15',2)"><span class="opt-label">C</span>Use mouse for point and click to undertake the analysis</button>
+      <button class="opt" onclick="pickAnswer('15',3)"><span class="opt-label">D</span>None of the above</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Recording syntax/scripts ensures reproducibility and allows others to replicate the analysis exactly.</div>
+  </div>
+  <div class="q-card" id="qcard-16" data-id="16" data-correct="3">
+    <div class="q-meta"><span class="q-num">Q16</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">What is meta data?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('16',0)"><span class="opt-label">A</span>Data about metal fatigue</button>
+      <button class="opt" onclick="pickAnswer('16',1)"><span class="opt-label">B</span>The metabolism data in a clinical trial</button>
+      <button class="opt" onclick="pickAnswer('16',2)"><span class="opt-label">C</span>The data about metamorphism</button>
+      <button class="opt" onclick="pickAnswer('16',3)"><span class="opt-label">D</span>It's the data about data</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Metadata provides information about other data - its structure, format, meaning, and usage.</div>
+  </div>
+  <div class="q-card" id="qcard-17" data-id="17" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q17</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which of the following is not an example of big data?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('17',0)"><span class="opt-label">A</span>Number of photographs uploaded to the internet every day</button>
+      <button class="opt" onclick="pickAnswer('17',1)"><span class="opt-label">B</span>The emails sent daily from your email provider</button>
+      <button class="opt" onclick="pickAnswer('17',2)"><span class="opt-label">C</span>The number of big basketball players in NBA (National Basketball Association)</button>
+      <button class="opt" onclick="pickAnswer('17',3)"><span class="opt-label">D</span>Weekly data about individual credit card transactions registered for your local credit card company</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Big data refers to massive, complex datasets. Number of NBA players is small and manageable.</div>
+  </div>
+  <div class="q-card" id="qcard-18" data-id="18" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q18</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">SPSS is ideally suited to analyze data stored in:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('18',0)"><span class="opt-label">A</span>Books as words and paragraphs</button>
+      <button class="opt" onclick="pickAnswer('18',1)"><span class="opt-label">B</span>Digital video files of Hollywood movies</button>
+      <button class="opt" onclick="pickAnswer('18',2)"><span class="opt-label">C</span>Tables as rows and columns</button>
+      <button class="opt" onclick="pickAnswer('18',3)"><span class="opt-label">D</span>Digital audio files of music records</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>SPSS is designed for statistical analysis of structured tabular data with rows and columns.</div>
+  </div>
+  <div class="q-card" id="qcard-19" data-id="19" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q19</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Reproducibility in statistical analysis requires one to use statistical software that supports:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('19',0)"><span class="opt-label">A</span>Free usage for analysis</button>
+      <button class="opt" onclick="pickAnswer('19',1)"><span class="opt-label">B</span>Syntax (script) based analysis</button>
+      <button class="opt" onclick="pickAnswer('19',2)"><span class="opt-label">C</span>Tabular output of results</button>
+      <button class="opt" onclick="pickAnswer('19',3)"><span class="opt-label">D</span>A point and click environment</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Script-based analysis allows exact replication of all steps and procedures.</div>
+  </div>
+  <div class="q-card" id="qcard-20" data-id="20" data-correct="3">
+    <div class="q-meta"><span class="q-num">Q20</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which of the following is an example of categorical data?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('20',0)"><span class="opt-label">A</span>Number of fire hydrants in a city</button>
+      <button class="opt" onclick="pickAnswer('20',1)"><span class="opt-label">B</span>Number of children at a kindergarten</button>
+      <button class="opt" onclick="pickAnswer('20',2)"><span class="opt-label">C</span>Length of the river Nile</button>
+      <button class="opt" onclick="pickAnswer('20',3)"><span class="opt-label">D</span>Mode of travel to work</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Categorical data represents qualities or characteristics. "Mode of travel" (car, bus, train) is categorical.</div>
+  </div>
+  <div class="q-card" id="qcard-21" data-id="21" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q21</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which of the following is not an example of ordinal data?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('21',0)"><span class="opt-label">A</span>Ranking of athletes in an Olympic competition</button>
+      <button class="opt" onclick="pickAnswer('21',1)"><span class="opt-label">B</span>Number of trees in a park</button>
+      <button class="opt" onclick="pickAnswer('21',2)"><span class="opt-label">C</span>Level of happiness on a scale of 1 to 5</button>
+      <button class="opt" onclick="pickAnswer('21',3)"><span class="opt-label">D</span>Street numbers</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Ordinal data has ordered categories. Number of trees is count data (ratio/interval), not ordinal.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">📏 Topic 4</div><span class="section-title">Statistical Measures</span><span class="section-count">Q22–Q28</span></div>
+  <div class="q-card" id="qcard-22" data-id="22" data-correct="3">
+    <div class="q-meta"><span class="q-num">Q22</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Which of the following is an example of interval data?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('22',0)"><span class="opt-label">A</span>The ethnicity of a person</button>
+      <button class="opt" onclick="pickAnswer('22',1)"><span class="opt-label">B</span>"None", "Some", "Frequent" - representing the frequency of exercise</button>
+      <button class="opt" onclick="pickAnswer('22',2)"><span class="opt-label">C</span>First, second and third rankings in a sports competition</button>
+      <button class="opt" onclick="pickAnswer('22',3)"><span class="opt-label">D</span>Weight</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Interval data has equal intervals but no true zero. Weight is ratio data (has true zero).</div>
+  </div>
+  <div class="q-card" id="qcard-23" data-id="23" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q23</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">For a survey of student satisfaction in a course, the population comprises:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('23',0)"><span class="opt-label">A</span>All students enrolled in the course</button>
+      <button class="opt" onclick="pickAnswer('23',1)"><span class="opt-label">B</span>All male students registered in the department</button>
+      <button class="opt" onclick="pickAnswer('23',2)"><span class="opt-label">C</span>All A+ students enrolled in the course</button>
+      <button class="opt" onclick="pickAnswer('23',3)"><span class="opt-label">D</span>All students registered at the university</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>The population is the complete group about which we want to draw conclusions - all course students.</div>
+  </div>
+  <div class="q-card" id="qcard-24" data-id="24" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q24</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">A mean is meaningful for the following type of data:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('24',0)"><span class="opt-label">A</span>Audio data</button>
+      <button class="opt" onclick="pickAnswer('24',1)"><span class="opt-label">B</span>Ordinal data</button>
+      <button class="opt" onclick="pickAnswer('24',2)"><span class="opt-label">C</span>Ratio data</button>
+      <button class="opt" onclick="pickAnswer('24',3)"><span class="opt-label">D</span>Categorical data</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Mean requires numerical data with equal intervals and true zero - characteristics of ratio data.</div>
+  </div>
+  <div class="q-card" id="qcard-25" data-id="25" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q25</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">Median represents a value in the data set where:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('25',0)"><span class="opt-label">A</span>Half of the observations are above the median and the other half below it</button>
+      <button class="opt" onclick="pickAnswer('25',1)"><span class="opt-label">B</span>Most observations are negative</button>
+      <button class="opt" onclick="pickAnswer('25',2)"><span class="opt-label">C</span>Half of the observations are known and the other half not known</button>
+      <button class="opt" onclick="pickAnswer('25',3)"><span class="opt-label">D</span>Most observations are positive</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Median is the middle value - 50% of observations fall below, 50% above it.</div>
+  </div>
+  <div class="q-card" id="qcard-26" data-id="26" data-correct="3">
+    <div class="q-meta"><span class="q-num">Q26</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">If the standard deviation of a variable is larger than the mean, the variable depicts:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('26',0)"><span class="opt-label">A</span>Fluidity</button>
+      <button class="opt" onclick="pickAnswer('26',1)"><span class="opt-label">B</span>Low variance</button>
+      <button class="opt" onclick="pickAnswer('26',2)"><span class="opt-label">C</span>Smoothness</button>
+      <button class="opt" onclick="pickAnswer('26',3)"><span class="opt-label">D</span>High variance</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Large SD relative to mean indicates high variability and spread in the data.</div>
+  </div>
+  <div class="q-card" id="qcard-27" data-id="27" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q27</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">A histogram is a graphical display of how a variable is:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('27',0)"><span class="opt-label">A</span>Observed</button>
+      <button class="opt" onclick="pickAnswer('27',1)"><span class="opt-label">B</span>Displayed</button>
+      <button class="opt" onclick="pickAnswer('27',2)"><span class="opt-label">C</span>Distributed</button>
+      <button class="opt" onclick="pickAnswer('27',3)"><span class="opt-label">D</span>Recorded</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Histograms show the frequency distribution of continuous variables across intervals.</div>
+  </div>
+  <div class="q-card" id="qcard-28" data-id="28" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q28</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">The following type of computation is suited for categorical data:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('28',0)"><span class="opt-label">A</span>Proportions</button>
+      <button class="opt" onclick="pickAnswer('28',1)"><span class="opt-label">B</span>Standard deviations</button>
+      <button class="opt" onclick="pickAnswer('28',2)"><span class="opt-label">C</span>Histogram</button>
+      <button class="opt" onclick="pickAnswer('28',3)"><span class="opt-label">D</span>Averages</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Proportions and percentages are appropriate for summarizing categorical data frequencies.</div>
+  </div>
+  <div class="section-header"><div class="topic-chip">📊 Topic 5</div><span class="section-title">Statistical Analysis & Testing</span><span class="section-count">Q29–Q35</span></div>
+  <div class="q-card" id="qcard-29" data-id="29" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q29</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">The relationship between two categorical variables can be captured by:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('29',0)"><span class="opt-label">A</span>Standard deviation</button>
+      <button class="opt" onclick="pickAnswer('29',1)"><span class="opt-label">B</span>A crosstabulation</button>
+      <button class="opt" onclick="pickAnswer('29',2)"><span class="opt-label">C</span>A bar chart</button>
+      <button class="opt" onclick="pickAnswer('29',3)"><span class="opt-label">D</span>A histogram</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Crosstabulation (contingency tables) shows joint frequencies and relationships between categorical variables.</div>
+  </div>
+  <div class="q-card" id="qcard-30" data-id="30" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q30</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">The probability of getting a 2 by rolling TWO six-sided dice (with sides labeled as 1, 2, 3, 4, 5, 6) is:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('30',0)"><span class="opt-label">A</span>1/36</button>
+      <button class="opt" onclick="pickAnswer('30',1)"><span class="opt-label">B</span>1/18</button>
+      <button class="opt" onclick="pickAnswer('30',2)"><span class="opt-label">C</span>2</button>
+      <button class="opt" onclick="pickAnswer('30',3)"><span class="opt-label">D</span>2/36</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Only one combination (1,1) gives sum 2. Total combinations = 6×6=36. P=1/36.</div>
+  </div>
+  <div class="q-card" id="qcard-31" data-id="31" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q31</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">What is the best way to determine the significance of relationship between two categorical variables?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('31',0)"><span class="opt-label">A</span>A regression model</button>
+      <button class="opt" onclick="pickAnswer('31',1)"><span class="opt-label">B</span>A Pearson Correlation test</button>
+      <button class="opt" onclick="pickAnswer('31',2)"><span class="opt-label">C</span>A Chi-square test</button>
+      <button class="opt" onclick="pickAnswer('31',3)"><span class="opt-label">D</span>A t-test</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Chi-square test is specifically designed for testing independence between categorical variables.</div>
+  </div>
+  <div class="q-card" id="qcard-32" data-id="32" data-correct="2">
+    <div class="q-meta"><span class="q-num">Q32</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">If two continuous variables are positively correlated, their scatter plot will depict:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('32',0)"><span class="opt-label">A</span>A flat line</button>
+      <button class="opt" onclick="pickAnswer('32',1)"><span class="opt-label">B</span>A downward sloping curve</button>
+      <button class="opt" onclick="pickAnswer('32',2)"><span class="opt-label">C</span>An upward sloping curve</button>
+      <button class="opt" onclick="pickAnswer('32',3)"><span class="opt-label">D</span>None of the above</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Positive correlation: as one variable increases, the other tends to increase → upward trend.</div>
+  </div>
+  <div class="q-card" id="qcard-33" data-id="33" data-correct="1">
+    <div class="q-meta"><span class="q-num">Q33</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">What is the best way to determine the significance of relationship between two continuous variables?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('33',0)"><span class="opt-label">A</span>A regression model</button>
+      <button class="opt" onclick="pickAnswer('33',1)"><span class="opt-label">B</span>A Pearson Correlation test</button>
+      <button class="opt" onclick="pickAnswer('33',2)"><span class="opt-label">C</span>A Chi-square test</button>
+      <button class="opt" onclick="pickAnswer('33',3)"><span class="opt-label">D</span>A t-test</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Pearson correlation coefficient measures linear relationship strength and significance between continuous variables.</div>
+  </div>
+  <div class="q-card" id="qcard-34" data-id="34" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q34</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">A good chart should not be missing the following:</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('34',0)"><span class="opt-label">A</span>A self-explanatory variable title</button>
+      <button class="opt" onclick="pickAnswer('34',1)"><span class="opt-label">B</span>Thick borders</button>
+      <button class="opt" onclick="pickAnswer('34',2)"><span class="opt-label">C</span>A dark background colour</button>
+      <button class="opt" onclick="pickAnswer('34',3)"><span class="opt-label">D</span>Bright colours</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Clear, descriptive titles are essential for chart readability and interpretation.</div>
+  </div>
+  <div class="q-card" id="qcard-35" data-id="35" data-correct="0">
+    <div class="q-meta"><span class="q-num">Q35</span><span class="diff-pill diff-medium">Medium</span></div>
+    <div class="q-text">What is the best practice to display axes labels?</div>
+    <div class="options-grid">
+      <button class="opt" onclick="pickAnswer('35',0)"><span class="opt-label">A</span>Use self-explanatory variables</button>
+      <button class="opt" onclick="pickAnswer('35',1)"><span class="opt-label">B</span>Use variable names</button>
+      <button class="opt" onclick="pickAnswer('35',2)"><span class="opt-label">C</span>Use bold font to highlight labels</button>
+      <button class="opt" onclick="pickAnswer('35',3)"><span class="opt-label">D</span>Don't use any labels</button>
+    </div>
+    <div class="explanation"><span class="explanation-label">💡 Explanation</span>Self-explanatory labels make charts accessible and understandable without additional context.</div>
+  </div>
+</div>
+
+<script src="quiz.js"></script>
+</body>
+</html>

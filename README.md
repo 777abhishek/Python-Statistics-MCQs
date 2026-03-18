@@ -22,6 +22,12 @@ A comprehensive interactive question bank for the **GCF Python Statistics Certif
 - **Responsive Design** with dark industrial aesthetic
 - **Difficulty Levels**: Easy, Medium, Hard, and Tricky questions
 
+## 🏆 Certificate
+
+![GCF Python Statistics Certificate](Certificate.png)
+
+This certificate represents successful completion of the **GCF Python Statistics Certificate Course**, demonstrating mastery of statistical computing with Python.
+
 ## 🚀 Getting Started
 
 ### Prerequisites

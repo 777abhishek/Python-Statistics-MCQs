@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CNEXAM — Practice Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/question-card.css">
+  <link rel="stylesheet" href="css/results.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- SPLASH / LANDING -->
+  <div id="splashScreen" class="splash-screen">
+    <div class="splash-bg"></div>
+    <div class="particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
+    <div class="splash-content">
+      <div class="splash-badge">NPTEL • CN & IP EXAM PREP</div>
+      <h1 class="splash-title">
+        <span class="title-cn">CN</span><span class="title-exam">EXAM</span>
+      </h1>
+      <p class="splash-subtitle">Computer Networks Practice Tests</p>
+      <div class="splash-stats" id="splashStats">
+        <div class="stat-pill">Loading...</div>
+      </div>
+      <div class="config-panel">
+        <label class="config-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          Questions per test
+        </label>
+        <div class="config-options">
+          <button class="config-btn active" data-count="25">25</button>
+          <button class="config-btn active-default" data-count="50">50</button>
+          <button class="config-btn" data-count="75">75</button>
+          <button class="config-btn" data-count="100">100</button>
+        </div>
+        <label class="config-label" style="margin-top:22px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+          Topic filter
+        </label>
+        <div class="filter-options" id="topicFilters">
+          <button class="filter-btn active" data-source="all">All Topics</button>
+          <button class="filter-btn" data-source="PYQS">PYQ Shift 1</button>
+          <button class="filter-btn" data-source="PYQ2019">PYQ 2019</button>
+          <button class="filter-btn" data-source="PYQ2019S2">PYQ 2019 S2</button>
+          <button class="filter-btn" data-source="CNIP">CN+IP</button>
+          <button class="filter-btn" data-source="NPTELCN">NPTEL CN</button>
+        </div>
+      </div>
+      <button class="start-btn" id="startBtn" onclick="App.start()">
+        <span>Start Test</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- TEST SCREEN -->
+  <div id="testScreen" class="test-screen hidden">
+    <header class="test-header">
+      <div class="test-header-left">
+        <button class="btn-home" onclick="App.goHome()" title="Back to Home">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </button>
+        <span class="test-logo">CN<span>EXAM</span></span>
+      </div>
+      <div class="test-progress-wrap">
+        <div class="test-progress-bar">
+          <div class="test-progress-fill" id="progressFill"></div>
+        </div>
+        <span class="test-progress-label" id="progressLabel">0 / 50 answered</span>
+      </div>
+      <div class="test-header-right">
+        <div class="timer-display" id="timerDisplay">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          <span id="timerText">00:00</span>
+        </div>
+        <button class="btn-submit-float" onclick="App.showSubmitPopup()">Submit</button>
+      </div>
+    </header>
+
+    <div class="test-body">
+      <div id="questionsContainer" class="questions-container"></div>
+      <div class="submit-zone">
+        <div class="submit-summary" id="submitSummary">
+          <span id="summaryAnswered">0</span> answered &nbsp;·&nbsp; <span id="summaryLeft">50</span> remaining
+        </div>
+        <button class="btn-submit" id="submitBtn" onclick="App.submit()">Submit Test</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div id="resultsScreen" class="results-screen hidden">
+    <div class="results-inner">
+      <div class="results-header">
+        <div class="results-badge" id="resultsBadge">—</div>
+        <div class="score-ring-wrap">
+          <svg class="score-ring" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="80" class="ring-bg"/>
+            <circle cx="100" cy="100" r="80" class="ring-fill" id="ringFill"/>
+          </svg>
+          <div class="score-text-wrap">
+            <span class="score-pct" id="scorePct">0%</span>
+            <span class="score-sub">Score</span>
+          </div>
+        </div>
+        <h2 class="results-title" id="resultsTitle">Test Complete</h2>
+      </div>
+
+      <div class="results-stats-grid">
+        <div class="res-stat correct">
+          <div class="res-stat-num" id="resCorrect">0</div>
+          <div class="res-stat-label">Correct</div>
+        </div>
+        <div class="res-stat incorrect">
+          <div class="res-stat-num" id="resIncorrect">0</div>
+          <div class="res-stat-label">Incorrect</div>
+        </div>
+        <div class="res-stat skipped">
+          <div class="res-stat-num" id="resSkipped">0</div>
+          <div class="res-stat-label">Skipped</div>
+        </div>
+        <div class="res-stat time">
+          <div class="res-stat-num" id="resTime">—</div>
+          <div class="res-stat-label">Time</div>
+        </div>
+      </div>
+
+      <div class="results-actions">
+        <button class="btn-home-results" onclick="App.goHome()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Back to Home
+        </button>
+        <button class="btn-review" onclick="App.reviewAnswers()">Review Answers</button>
+        <button class="btn-new" onclick="App.newTest()">New Test</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW SCREEN -->
+  <div id="reviewScreen" class="review-screen hidden">
+    <header class="review-header">
+      <button class="back-btn" onclick="App.backToResults()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 5l-7 7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        Results
+      </button>
+      <h2>Answer Review</h2>
+      <div class="review-filter">
+        <button class="rfilt active" data-filter="all" onclick="Review.filter('all',this)">All</button>
+        <button class="rfilt" data-filter="wrong" onclick="Review.filter('wrong',this)">Wrong</button>
+        <button class="rfilt" data-filter="skipped" onclick="Review.filter('skipped',this)">Skipped</button>
+      </div>
+    </header>
+    <div id="reviewContainer" class="review-container"></div>
+  </div>
+
+  <!-- Submit Confirmation Popup -->
+  <div id="submitPopup" class="submit-popup hidden">
+    <div class="submit-popup-backdrop" onclick="App.hideSubmitPopup()"></div>
+    <div class="submit-popup-content">
+      <div class="submit-popup-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      </div>
+      <h3 class="submit-popup-title">Ready to Submit?</h3>
+      <p class="submit-popup-text">You have answered <strong id="popupAnswered">0</strong> of <strong id="popupTotal">0</strong> questions</p>
+      <div class="submit-popup-stats" id="popupStats"></div>
+      <div class="submit-popup-actions">
+        <button class="btn-popup-cancel" onclick="App.hideSubmitPopup()">Continue Test</button>
+        <button class="btn-popup-submit" onclick="App.confirmSubmit()">Submit Now</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data files (unchanged) -->
+  <script src="pyqs-data.js"></script>
+  <script src="pyq2019-data.js"></script>
+  <script src="pyq2019s2-data.js"></script>
+  <script src="cnip-data.js"></script>
+  <script src="nptel-cn-data.js"></script>
+
+  <!-- App modules -->
+  <script src="js/data-loader.js"></script>
+  <script src="js/question-card.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/review.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

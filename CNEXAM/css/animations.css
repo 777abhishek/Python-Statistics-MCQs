@@ -1,0 +1,92 @@
+/* ── ANIMATIONS ───────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(248,113,113,0); }
+  50%       { box-shadow: 0 0 0 3px rgba(248,113,113,0.3); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes meshFloat {
+  0%, 100% {
+    background-position: 0% 50%;
+    transform: scale(1);
+  }
+  33% {
+    background-position: 100% 50%;
+    transform: scale(1.02);
+  }
+  66% {
+    background-position: 50% 100%;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(100vh) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-20px) scale(1);
+    opacity: 0;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Splash entrance - enhanced stagger */
+.splash-logo      { animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.splash-badge     { animation: fadeUp 0.6s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.splash-title     { animation: fadeUp 0.6s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.splash-subtitle  { animation: fadeUp 0.6s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.splash-stats     { animation: fadeUp 0.6s 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.config-panel     { animation: fadeUp 0.6s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.start-btn        { animation: fadeUp 0.6s 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Stat card entrance stagger */
+.stat-card:nth-child(1) { animation: fadeUp 0.5s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.stat-card:nth-child(2) { animation: fadeUp 0.5s 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.stat-card:nth-child(3) { animation: fadeUp 0.5s 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.stat-card:nth-child(4) { animation: fadeUp 0.5s 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Question card stagger */
+.q-card {
+  animation: fadeUp 0.35s ease both;
+}
+
+/* Screen transitions */
+.test-screen.entering    { animation: fadeIn 0.3s ease both; }
+.results-screen.entering { animation: fadeIn 0.4s ease both; }
+.review-screen.entering  { animation: fadeIn 0.3s ease both; }

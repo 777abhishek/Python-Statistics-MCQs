@@ -1,0 +1,137 @@
+/* ── SPLASH ──────────────────────────────────────── */
+.splash-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.splash-bg {
+  position: fixed;
+  inset: 0;
+  background:
+    var(--gradient-glow),
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(52,211,153,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 20%, rgba(91,141,238,0.15) 0%, transparent 50%),
+    var(--bg);
+  z-index: 0;
+}
+
+/* Animated mesh overlay */
+.splash-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(91,141,238,0.1) 0%, transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(52,211,153,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(91,141,238,0.05) 0%, transparent 60%);
+  animation: meshFloat 15s ease-in-out infinite;
+}
+
+.splash-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  mix-blend-mode: overlay;
+}
+
+.splash-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* Floating particles */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent);
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: particleFloat 20s ease-in-out infinite;
+}
+
+.particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 25s; }
+.particle:nth-child(2) { left: 30%; animation-delay: -5s; animation-duration: 30s; }
+.particle:nth-child(3) { left: 50%; animation-delay: -10s; animation-duration: 22s; }
+.particle:nth-child(4) { left: 70%; animation-delay: -15s; animation-duration: 28s; }
+.particle:nth-child(5) { left: 90%; animation-delay: -8s; animation-duration: 24s; }
+
+/* ── TEST SCREEN ─────────────────────────────────── */
+.test-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.test-body {
+  flex: 1;
+  max-width: 780px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 32px 24px 100px;
+}
+
+.questions-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── RESULTS SCREEN ──────────────────────────────── */
+.results-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 10%, rgba(91,141,238,0.12) 0%, transparent 70%),
+    var(--bg);
+}
+
+.results-inner {
+  width: 100%;
+  max-width: 560px;
+}
+
+/* ── REVIEW SCREEN ───────────────────────────────── */
+.review-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.review-container {
+  max-width: 780px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── UTILITY ─────────────────────────────────────── */
+.hidden { display: none !important; }

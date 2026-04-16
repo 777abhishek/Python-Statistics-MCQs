@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CNEXAM — Practice Test</title>
+  <title>CNEXAM — Computer Networks Exam Prep</title>
+  <meta name="description" content="NPTEL Computer Networks & Internet Protocol exam preparation with PYQs, weekly assignments, and practice tests.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,58 +16,771 @@
   <link rel="stylesheet" href="css/results.css">
   <link rel="stylesheet" href="css/animations.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    /* ── HOME REDESIGN ─────────────────────────── */
+    body { font-family: var(--sans); background: var(--bg); color: var(--text); }
+
+    .home-screen { min-height: 100vh; position: relative; overflow: hidden; }
+
+    /* Ambient background */
+    .home-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background:
+        var(--gradient-glow),
+        radial-gradient(ellipse 60% 40% at 20% 80%, rgba(52,211,153,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 80% 20%, rgba(91,141,238,0.10) 0%, transparent 50%),
+        var(--bg);
+    }
+    .home-bg::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.025; mix-blend-mode: overlay;
+    }
+
+    /* ── SITE HEADER ───────────────────────────── */
+    .site-header {
+      position: relative; z-index: 10;
+      border-bottom: 1px solid var(--border);
+      background: rgba(13,15,20,0.85);
+      backdrop-filter: blur(20px);
+    }
+    .header-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 14px 28px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .header-logo {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: var(--gradient-accent);
+      border-radius: 10px;
+      font-family: var(--mono); font-size: 13px; font-weight: 700; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 0 20px rgba(91,141,238,0.4);
+    }
+    .logo-text {
+      font-family: var(--mono); font-size: 16px; font-weight: 700; color: var(--text);
+    }
+    .logo-text span { color: var(--accent); }
+    .header-divider {
+      width: 1px; height: 20px; background: var(--border);
+    }
+    .header-subtitle {
+      font-size: 12px; color: var(--text-muted); font-weight: 500; letter-spacing: 0.02em;
+    }
+    .header-right { margin-left: auto; }
+    .header-badge {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      color: var(--accent); border: 1px solid var(--accent-dim);
+      background: var(--accent-dim); padding: 5px 12px; border-radius: 100px;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── HERO ──────────────────────────────────── */
+    .home-hero {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 64px 28px 48px;
+    }
+    .hero-eyebrow {
+      font-family: var(--mono); font-size: 11px; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 18px;
+    }
+    .hero-title {
+      font-family: var(--mono);
+      font-size: clamp(36px, 6vw, 62px);
+      font-weight: 700; line-height: 1.05;
+      letter-spacing: -0.03em; margin-bottom: 18px;
+    }
+    .hero-title em { color: var(--accent); font-style: normal; }
+    .hero-desc {
+      font-size: 15px; color: var(--text-muted); line-height: 1.7;
+      max-width: 580px; margin-bottom: 44px;
+    }
+    .hero-stats {
+      display: flex; gap: 32px; flex-wrap: wrap;
+    }
+    .hero-stat {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .hero-stat-val {
+      font-family: var(--mono); font-size: 28px; font-weight: 700; color: var(--text);
+    }
+    .hero-stat-label {
+      font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em;
+    }
+
+    /* ── SETS GRID ─────────────────────────────── */
+    .sets-section {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 28px 80px;
+    }
+    .sets-section-label {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-faint); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .sets-section-label::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    .sets-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    /* ── SET CARD ──────────────────────────────── */
+    .set-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+      overflow: hidden;
+      display: block;
+    }
+    .set-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--card-accent-color, transparent);
+      opacity: 0; transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .set-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--card-color, var(--border-mid));
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4), 0 0 0 1px var(--card-color, transparent);
+    }
+    .set-card:hover::before { opacity: 1; }
+    .set-card:active { transform: translateY(-1px); }
+
+    .set-card-number {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      color: var(--card-color, var(--text-faint));
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .set-card-title {
+      font-size: 17px; font-weight: 700; color: var(--text);
+      margin-bottom: 10px; line-height: 1.3;
+    }
+    .set-card-desc {
+      font-size: 13px; color: var(--text-muted); line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    .set-card-meta {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;
+    }
+    .meta-chip {
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      padding: 4px 9px; border-radius: 4px;
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      color: var(--text-muted); letter-spacing: 0.03em;
+    }
+    .set-card-tags {
+      display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .tag {
+      font-size: 11px; padding: 3px 8px; border-radius: 4px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      color: var(--text-faint);
+    }
+    .set-card-cta {
+      display: flex; align-items: center; justify-content: space-between;
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      color: var(--card-color, var(--accent));
+      padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .set-card-cta svg {
+      transition: transform 0.25s ease;
+    }
+    .set-card:hover .set-card-cta svg { transform: translateX(4px); }
+
+    /* Assignment badge on card */
+    .card-assignment-flag {
+      position: absolute; top: 16px; right: 16px;
+      font-family: var(--mono); font-size: 9px; font-weight: 700;
+      padding: 3px 8px; border-radius: 4px;
+      color: var(--warn); background: var(--warn-dim);
+      border: 1px solid rgba(251,191,36,0.2);
+      letter-spacing: 0.05em;
+    }
+
+    /* Quick Launch bar */
+    .quick-launch {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 28px 48px;
+    }
+    .quick-launch-inner {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: var(--glass-blur);
+      border-radius: var(--radius-xl);
+      padding: 28px 32px;
+    }
+    .quick-launch-title {
+      font-family: var(--mono); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .quick-launch-title svg { color: var(--accent); }
+    .ql-row {
+      display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 16px;
+    }
+    .ql-label {
+      font-size: 12px; font-family: var(--mono); color: var(--text-faint);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      min-width: 80px;
+    }
+    .ql-options { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ql-btn {
+      padding: 8px 18px; border-radius: var(--radius-md);
+      font-size: 13px; font-weight: 600; font-family: var(--mono);
+      color: var(--text-muted); background: var(--bg-elevated);
+      border: 1px solid var(--border); transition: all 0.2s ease;
+    }
+    .ql-btn:hover { color: var(--text); border-color: var(--border-mid); }
+    .ql-btn.active {
+      color: #fff; background: var(--gradient-accent);
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(91,141,238,0.35);
+    }
+    .ql-source-btn {
+      padding: 7px 14px; border-radius: 100px;
+      font-size: 12px; font-weight: 500;
+      color: var(--text-muted); background: var(--bg-elevated);
+      border: 1px solid var(--border); transition: all 0.2s ease;
+    }
+    .ql-source-btn:hover { color: var(--text); border-color: var(--border-mid); }
+    .ql-source-btn.active {
+      color: #fff; background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(91,141,238,0.3);
+    }
+    .ql-launch-btn {
+      display: flex; align-items: center; gap: 10px;
+      width: 100%; padding: 16px 28px;
+      background: var(--gradient-accent); color: #fff;
+      font-size: 15px; font-weight: 700; border-radius: var(--radius-lg);
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 28px rgba(91,141,238,0.35);
+      margin-top: 20px; justify-content: center;
+    }
+    .ql-launch-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 36px rgba(91,141,238,0.45);
+    }
+    .ql-launch-btn:hover svg { transform: translateX(4px); }
+    .ql-launch-btn svg { transition: transform 0.3s ease; }
+
+    @media (max-width: 640px) {
+      .header-inner { padding: 12px 16px; }
+      .home-hero { padding: 40px 16px 32px; }
+      .sets-section, .quick-launch { padding-left: 16px; padding-right: 16px; }
+      .sets-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 20px; }
+      .hero-stat-val { font-size: 22px; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- SPLASH / LANDING -->
-  <div id="splashScreen" class="splash-screen">
-    <div class="splash-bg"></div>
-    <div class="particles">
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-    </div>
-    <div class="splash-content">
-      <div class="splash-badge">NPTEL • CN & IP EXAM PREP</div>
-      <h1 class="splash-title">
-        <span class="title-cn">CN</span><span class="title-exam">EXAM</span>
-      </h1>
-      <p class="splash-subtitle">Computer Networks Practice Tests</p>
-      <div class="splash-stats" id="splashStats">
-        <div class="stat-pill">Loading...</div>
-      </div>
-      <div class="config-panel">
-        <label class="config-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-          Questions per test
-        </label>
-        <div class="config-options">
-          <button class="config-btn active" data-count="25">25</button>
-          <button class="config-btn active-default" data-count="50">50</button>
-          <button class="config-btn" data-count="75">75</button>
-          <button class="config-btn" data-count="100">100</button>
+  <!-- HOME SCREEN -->
+  <div id="homeScreen" class="home-screen">
+    <div class="home-bg"></div>
+
+    <!-- Header -->
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="header-logo">
+          <div class="logo-mark">CN</div>
+          <span class="logo-text">CN<span>EXAM</span></span>
         </div>
-        <label class="config-label" style="margin-top:22px;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
-          Topic filter
-        </label>
-        <div class="filter-options" id="topicFilters">
-          <button class="filter-btn active" data-source="all">All Topics</button>
-          <button class="filter-btn" data-source="PYQS">PYQ Shift 1</button>
-          <button class="filter-btn" data-source="PYQ2019">PYQ 2019</button>
-          <button class="filter-btn" data-source="PYQ2019S2">PYQ 2019 S2</button>
-          <button class="filter-btn" data-source="CNIP">CN+IP</button>
-          <button class="filter-btn" data-source="NPTELCN">NPTEL CN</button>
+        <div class="header-divider"></div>
+        <span class="header-subtitle">NPTEL · Computer Networks & IP</span>
+        <div class="header-right">
+          <span class="header-badge" id="totalBadge">Loading...</span>
         </div>
       </div>
-      <button class="start-btn" id="startBtn" onclick="App.start()">
-        <span>Start Test</span>
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
+    </header>
+
+    <!-- Hero -->
+    <div class="home-hero">
+      <div class="hero-eyebrow">IIT Kharagpur · Jan 2026 · Exam Prep</div>
+      <h1 class="hero-title">CN<em>EXAM</em><br>Question Bank</h1>
+      <p class="hero-desc">Complete question bank for Computer Networks & Internet Protocol. Weekly NPTEL assignments, Previous Year Questions across multiple sessions, and curated NPTEL course questions — all with detailed explanations.</p>
+      <div class="hero-stats" id="heroStats">
+        <div class="hero-stat"><span class="hero-stat-val">—</span><span class="hero-stat-label">Total Questions</span></div>
+        <div class="hero-stat"><span class="hero-stat-val">12</span><span class="hero-stat-label">Weekly Assignments</span></div>
+        <div class="hero-stat"><span class="hero-stat-val">5</span><span class="hero-stat-label">Question Sources</span></div>
+        <div class="hero-stat"><span class="hero-stat-val">100%</span><span class="hero-stat-label">With Solutions</span></div>
+      </div>
     </div>
-  </div>
+
+    <!-- Quick Launch -->
+    <div class="quick-launch">
+      <div class="quick-launch-inner">
+        <div class="quick-launch-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Custom Quick Launch
+        </div>
+        <div class="ql-row">
+          <span class="ql-label">Questions</span>
+          <div class="ql-options" id="qlCountOpts">
+            <button class="ql-btn" data-count="10">10</button>
+            <button class="ql-btn" data-count="25">25</button>
+            <button class="ql-btn active" data-count="50">50</button>
+            <button class="ql-btn" data-count="75">75</button>
+            <button class="ql-btn" data-count="100">100</button>
+          </div>
+        </div>
+        <div class="ql-row">
+          <span class="ql-label">Source</span>
+          <div class="ql-options" id="qlSourceOpts">
+            <button class="ql-source-btn" data-source="all">All</button>
+            <button class="ql-source-btn" data-source="PYQS">PYQ S1</button>
+            <button class="ql-source-btn" data-source="PYQ2019">2019 S1</button>
+            <button class="ql-source-btn" data-source="PYQ2019S2">2019 S2</button>
+            <button class="ql-source-btn" data-source="CNIP">Assignments</button>
+            <button class="ql-source-btn" data-source="NPTELCN">NPTEL</button>
+            <button class="ql-source-btn" data-source="MOCK">Mock</button>
+          </div>
+        </div>
+        <button class="ql-launch-btn" onclick="App.start()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Launch Custom Test
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- PYQ Sets -->
+    <div class="sets-section">
+      <div class="sets-section-label">Previous Year Questions</div>
+      <div class="sets-grid" id="pyqGrid">
+
+        <div class="set-card" style="--card-color:#58a6ff; --card-accent-color:rgba(88,166,255,0.04)"
+             onclick="App.startFromCard('PYQS', 50)">
+          <div class="set-card-number">PYQ · Shift 1</div>
+          <div class="set-card-title">Previous Year — Shift 1</div>
+          <div class="set-card-desc">Original NPTEL exam questions from Shift 1 covering all major CN topics including TCP/IP, routing protocols, network layers, and more.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip" id="pyqs-count">— Questions</span>
+            <span class="meta-chip">Shuffled</span>
+            <span class="meta-chip">With Solutions</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">TCP/IP</span><span class="tag">Routing</span><span class="tag">OSI Model</span>
+            <span class="tag">Subnetting</span><span class="tag">UDP</span><span class="tag">DNS</span>
+          </div>
+          <div class="set-card-cta">
+            Start Shift 1 PYQs
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#3fb950; --card-accent-color:rgba(63,185,80,0.04)"
+             onclick="App.startFromCard('PYQ2019', 50)">
+          <div class="set-card-number">PYQ · 2019 S1</div>
+          <div class="set-card-title">2019 Exam — Session 1</div>
+          <div class="set-card-desc">Questions from the 2019 NPTEL Computer Networks exam, first session. Covers network fundamentals, data link layer, and transport protocols.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip" id="pyq2019-count">— Questions</span>
+            <span class="meta-chip">Shuffled</span>
+            <span class="meta-chip">With Solutions</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">Data Link</span><span class="tag">MAC</span><span class="tag">Ethernet</span>
+            <span class="tag">TCP</span><span class="tag">Flow Control</span><span class="tag">Congestion</span>
+          </div>
+          <div class="set-card-cta">
+            Start 2019 S1 PYQs
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#bc8cff; --card-accent-color:rgba(188,140,255,0.04)"
+             onclick="App.startFromCard('PYQ2019S2', 50)">
+          <div class="set-card-number">PYQ · 2019 S2</div>
+          <div class="set-card-title">2019 Exam — Session 2</div>
+          <div class="set-card-desc">Questions from the 2019 NPTEL Computer Networks exam, second session. Features more advanced topics and applied problem-solving.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip" id="pyq2019s2-count">— Questions</span>
+            <span class="meta-chip">Shuffled</span>
+            <span class="meta-chip">With Solutions</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">IP Addressing</span><span class="tag">CIDR</span><span class="tag">BGP</span>
+            <span class="tag">OSPF</span><span class="tag">Multicast</span><span class="tag">QoS</span>
+          </div>
+          <div class="set-card-cta">
+            Start 2019 S2 PYQs
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#ffa657; --card-accent-color:rgba(255,166,87,0.04)"
+             onclick="App.startFromCard('NPTELCN', 50)">
+          <div class="set-card-number">NPTEL · Course Qs</div>
+          <div class="set-card-title">NPTEL Course Questions</div>
+          <div class="set-card-desc">Curated questions from the official NPTEL Computer Networks course material, ideal for conceptual mastery across all 12 weeks of content.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip" id="nptelcn-count">— Questions</span>
+            <span class="meta-chip">Shuffled</span>
+            <span class="meta-chip">Conceptual</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">All Layers</span><span class="tag">Protocols</span><span class="tag">Security</span>
+            <span class="tag">Wireless</span><span class="tag">SDN</span><span class="tag">Multimedia</span>
+          </div>
+          <div class="set-card-cta">
+            Start NPTEL Course Qs
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#ec4899; --card-accent-color:rgba(236,72,153,0.04)"
+             onclick="App.startFromCard('MOCK', 150)">
+          <div class="set-card-number">Mock · Paper</div>
+          <div class="set-card-title">Mock Examination Paper</div>
+          <div class="set-card-desc">Comprehensive mock paper covering all major Computer Networks topics - protocols, layers, security, and practical scenarios. Perfect for exam readiness.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip" id="mock-count">150 Questions</span>
+            <span class="meta-chip">Shuffled</span>
+            <span class="meta-chip">With Solutions</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">All Topics</span><span class="tag">Exam Style</span><span class="tag">Mixed Difficulty</span>
+          </div>
+          <div class="set-card-cta">
+            Start Mock Paper
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Assignment Sets -->
+      <div class="sets-section-label">Weekly Assignments — Jan 2026</div>
+      <div class="sets-grid" id="assignmentGrid">
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W0', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 00</div>
+          <div class="set-card-title">Week 0 — Warm-Up</div>
+          <div class="set-card-desc">OS fundamentals warm-up: schedulers, umask, CPU scheduling, file permissions, semaphores, and HTTP basics. A solid start before the CN deep-dive.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">OS Basics</span><span class="tag">Scheduling</span><span class="tag">HTTP</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 0
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W1', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 01</div>
+          <div class="set-card-title">Week 1 — Network Fundamentals</div>
+          <div class="set-card-desc">TCP/IP model layers, encapsulation, circuit vs packet switching, socket addresses, MAC addressing, NIC roles, and IPv4 basics.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">TCP/IP Model</span><span class="tag">NIC</span><span class="tag">Encapsulation</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 1
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W2', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 02</div>
+          <div class="set-card-title">Week 2 — Application Layer</div>
+          <div class="set-card-desc">DNS, HTTP, FTP, TFTP, Telnet, SMTP, MIME, POP3, IMAP4 — application layer protocols with security and usage comparisons.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">DNS</span><span class="tag">HTTP</span><span class="tag">FTP</span><span class="tag">SMTP</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 2
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W3', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 03</div>
+          <div class="set-card-title">Week 3 — Transport Layer</div>
+          <div class="set-card-desc">TCP three-way handshake, flow control, sliding window protocols, ARQ (Go-Back-N, Selective Repeat), sequence numbers, and connection teardown.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">TCP</span><span class="tag">3-Way Handshake</span><span class="tag">ARQ</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 3
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W4', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 04</div>
+          <div class="set-card-title">Week 4 — Advanced TCP</div>
+          <div class="set-card-desc">TCP congestion control (AIMD, slow start), SYN flood attacks, TIME-WAIT state, BDP, keep-alive, and simultaneous open scenarios.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">Congestion Control</span><span class="tag">AIMD</span><span class="tag">SYN Flood</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 4
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W5', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 05</div>
+          <div class="set-card-title">Week 5 — Socket Programming</div>
+          <div class="set-card-desc">Socket API: listen(), accept(), setsockopt(), SOCK_DGRAM, select(), FD_ZERO, sender window, Jacobson's RTT algorithm, iterative vs concurrent servers.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">Sockets</span><span class="tag">UDP/TCP API</span><span class="tag">select()</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 5
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W6', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 06</div>
+          <div class="set-card-title">Week 6 — Network Layer</div>
+          <div class="set-card-desc">IP addressing, subnetting, CIDR, IPv4 vs IPv6, Class B/C networks, routing, Layer 3 switches, unspecified addresses, and supernetting.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">IP Addressing</span><span class="tag">Subnetting</span><span class="tag">IPv6</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 6
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W7', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 07</div>
+          <div class="set-card-title">Week 7 — QoS & Traffic Management</div>
+          <div class="set-card-desc">Quality of Service concepts, traffic shaping (Token Bucket, Leaky Bucket), WFQ scheduling, RED algorithm, RSVP, and real-time vs elastic traffic.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">QoS</span><span class="tag">Token Bucket</span><span class="tag">WFQ</span><span class="tag">RSVP</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 7
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W8', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 08</div>
+          <div class="set-card-title">Week 8 — Data Link Layer</div>
+          <div class="set-card-desc">LLC services, IEEE 802 standards, MAC sublayer, Ethernet framing, Go-Back-N ARQ, ALOHA protocols, CSMA/CD, and burst error detection.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">LLC</span><span class="tag">MAC</span><span class="tag">CSMA/CD</span><span class="tag">ALOHA</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 8
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W9', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 09</div>
+          <div class="set-card-title">Week 9 — SDN & Routing</div>
+          <div class="set-card-desc">Software Defined Networking, OpenFlow protocol, FIB vs RIB, northbound interfaces, Ethernet framing types, static routing, and subnet design.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">SDN</span><span class="tag">OpenFlow</span><span class="tag">FIB/RIB</span><span class="tag">Static Routes</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 9
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W10', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 10</div>
+          <div class="set-card-title">Week 10 — Routing Protocols</div>
+          <div class="set-card-desc">Longest prefix matching, OSPF, BGP, RIP, distance vector routing, Patricia Trees, DHCP, and IP address architecture with network/host split.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">BGP</span><span class="tag">OSPF</span><span class="tag">Patricia Tree</span><span class="tag">DHCP</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 10
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W11', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 11</div>
+          <div class="set-card-title">Week 11 — LAN & WLAN</div>
+          <div class="set-card-desc">ARP, RARP, DHCP, VLANs, trunking, IEEE 802.11 WLAN, DCF vs PCF, inter-VLAN routing, and ARP traffic calculations.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">ARP</span><span class="tag">VLAN</span><span class="tag">802.11</span><span class="tag">DHCP</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 11
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#fbbf24; --card-accent-color:rgba(251,191,36,0.04)"
+             onclick="App.startFromCard('CNIP-W12', 10)">
+          <div class="card-assignment-flag">ASSIGNMENT</div>
+          <div class="set-card-number">Week · 12</div>
+          <div class="set-card-title">Week 12 — Security & Physical Layer</div>
+          <div class="set-card-desc">IPSec (AH, ESP, IKE), TDM/FDM/CDM multiplexing, modulation techniques (ASK/FSK/PSK/QAM), NAT, network attacks, and Nyquist sampling theorem.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip">10 Questions</span>
+            <span class="meta-chip">Assignment</span>
+            <span class="meta-chip">Solved</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">IPSec</span><span class="tag">NAT</span><span class="tag">Multiplexing</span><span class="tag">Nyquist</span>
+          </div>
+          <div class="set-card-cta">
+            Practice Week 12
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- All Assignments combined card -->
+      <div class="sets-section-label">Shuffle All</div>
+      <div class="sets-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))">
+
+        <div class="set-card" style="--card-color:#f87171; --card-accent-color:rgba(248,113,113,0.04)"
+             onclick="App.startFromCard('CNIP', 100)">
+          <div class="set-card-number">All · Jan 2026</div>
+          <div class="set-card-title">All Assignments Shuffled</div>
+          <div class="set-card-desc">Randomly pulled questions from all 13 weekly assignments — the ultimate mixed practice session for the Jan 2026 NPTEL course.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip" id="cnip-count">— Questions</span>
+            <span class="meta-chip">Random Shuffle</span>
+            <span class="meta-chip">All Weeks</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">Week 0–12</span><span class="tag">All Topics</span><span class="tag">Full Mix</span>
+          </div>
+          <div class="set-card-cta">
+            Start Full Shuffle
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+        <div class="set-card" style="--card-color:#5b8dee; --card-accent-color:rgba(91,141,238,0.04)"
+             onclick="App.startFromCard('all', 75)">
+          <div class="set-card-number">All · Sources</div>
+          <div class="set-card-title">Everything Shuffled</div>
+          <div class="set-card-desc">Draw from all available question banks — PYQs, weekly assignments, and NPTEL course questions — for the most comprehensive practice session.</div>
+          <div class="set-card-meta">
+            <span class="meta-chip" id="all-count">— Questions</span>
+            <span class="meta-chip">All Sources</span>
+            <span class="meta-chip">75-Q Test</span>
+          </div>
+          <div class="set-card-tags">
+            <span class="tag">PYQs</span><span class="tag">Assignments</span><span class="tag">NPTEL</span>
+          </div>
+          <div class="set-card-cta">
+            Start Ultimate Shuffle
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    </div>
 
   <!-- TEST SCREEN -->
   <div id="testScreen" class="test-screen hidden">
@@ -91,7 +805,6 @@
         <button class="btn-submit-float" onclick="App.showSubmitPopup()">Submit</button>
       </div>
     </header>
-
     <div class="test-body">
       <div id="questionsContainer" class="questions-container"></div>
       <div class="submit-zone">
@@ -107,7 +820,7 @@
   <div id="resultsScreen" class="results-screen hidden">
     <div class="results-inner">
       <div class="results-header">
-        <div class="results-badge" id="resultsBadge">—</div>
+        <div class="results-badge" id="resultsBadge">PASSED</div>
         <div class="score-ring-wrap">
           <svg class="score-ring" viewBox="0 0 200 200">
             <circle cx="100" cy="100" r="80" class="ring-bg"/>
@@ -119,24 +832,48 @@
           </div>
         </div>
         <h2 class="results-title" id="resultsTitle">Test Complete</h2>
+        <p class="results-subtitle" id="resultsSubtitle">Great effort! Keep practicing to improve.</p>
       </div>
 
       <div class="results-stats-grid">
         <div class="res-stat correct">
+          <div class="res-stat-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg>
+          </div>
           <div class="res-stat-num" id="resCorrect">0</div>
           <div class="res-stat-label">Correct</div>
         </div>
         <div class="res-stat incorrect">
+          <div class="res-stat-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </div>
           <div class="res-stat-num" id="resIncorrect">0</div>
           <div class="res-stat-label">Incorrect</div>
         </div>
         <div class="res-stat skipped">
+          <div class="res-stat-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          </div>
           <div class="res-stat-num" id="resSkipped">0</div>
           <div class="res-stat-label">Skipped</div>
         </div>
         <div class="res-stat time">
-          <div class="res-stat-num" id="resTime">—</div>
+          <div class="res-stat-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div class="res-stat-num" id="resTime">0:00</div>
           <div class="res-stat-label">Time</div>
+        </div>
+      </div>
+
+      <div class="results-performance">
+        <div class="perf-item">
+          <span class="perf-label">Accuracy</span>
+          <span class="perf-value" id="perfAccuracy">0%</span>
+        </div>
+        <div class="perf-item">
+          <span class="perf-label">Avg Time/Question</span>
+          <span class="perf-value" id="perfAvgTime">0s</span>
         </div>
       </div>
 
@@ -145,8 +882,14 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           Back to Home
         </button>
-        <button class="btn-review" onclick="App.reviewAnswers()">Review Answers</button>
-        <button class="btn-new" onclick="App.newTest()">New Test</button>
+        <button class="btn-review" onclick="App.reviewAnswers()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Review Answers
+        </button>
+        <button class="btn-new" onclick="App.newTest()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+          New Test
+        </button>
       </div>
     </div>
   </div>
@@ -168,29 +911,56 @@
     <div id="reviewContainer" class="review-container"></div>
   </div>
 
-  <!-- Submit Confirmation Popup -->
+  <!-- Submit Popup -->
   <div id="submitPopup" class="submit-popup hidden">
     <div class="submit-popup-backdrop" onclick="App.hideSubmitPopup()"></div>
     <div class="submit-popup-content">
-      <div class="submit-popup-icon">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <div class="submit-popup-header">
+        <div class="submit-popup-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3 class="submit-popup-title">Ready to Submit?</h3>
+        <p class="submit-popup-text">Review your progress before submitting</p>
       </div>
-      <h3 class="submit-popup-title">Ready to Submit?</h3>
-      <p class="submit-popup-text">You have answered <strong id="popupAnswered">0</strong> of <strong id="popupTotal">0</strong> questions</p>
+      
+      <div class="submit-popup-progress">
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="popupProgress"></div>
+        </div>
+        <div class="progress-text">
+          <span id="popupAnswered">0</span> / <span id="popupTotal">0</span> answered
+        </div>
+      </div>
+
       <div class="submit-popup-stats" id="popupStats"></div>
+
+      <div class="submit-popup-tips">
+        <div class="tip-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <span>Unanswered questions will be marked as skipped</span>
+        </div>
+      </div>
+
       <div class="submit-popup-actions">
-        <button class="btn-popup-cancel" onclick="App.hideSubmitPopup()">Continue Test</button>
-        <button class="btn-popup-submit" onclick="App.confirmSubmit()">Submit Now</button>
+        <button class="btn-popup-cancel" onclick="App.hideSubmitPopup()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Continue Test
+        </button>
+        <button class="btn-popup-submit" onclick="App.confirmSubmit()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 13l4 4L19 7"/><path d="M12 5v14"/></svg>
+          Submit Now
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Data files (unchanged) -->
+  <!-- Data files -->
   <script src="pyqs-data.js"></script>
   <script src="pyq2019-data.js"></script>
   <script src="pyq2019s2-data.js"></script>
   <script src="cnip-data.js"></script>
   <script src="nptel-cn-data.js"></script>
+  <script src="mock-data.js"></script>
 
   <!-- App modules -->
   <script src="js/data-loader.js"></script>

@@ -26,15 +26,20 @@ const DataLoader = (() => {
       correctAnswer = q.correct_answer;
     }
 
+    const isAssignment = String(q.id).startsWith('W');
+
     return {
       id:            `${source}-${q.id}`,
+      rawId:         String(q.id),
+      rawSource:     source,
       question:      q.question,
       options,
       correctAnswer,
       explanation:   q.explanation || '',
       topic:         q.topic       || '',
       paper:         q.paper       || '',
-      source,
+      isAssignment,
+      source:        source === 'CNIP' ? 'Jan 2026 course' : source,
     };
   }
 
@@ -48,6 +53,7 @@ const DataLoader = (() => {
       { key: 'PYQ2019S2',  data: typeof PYQ2019S2_DATA  !== 'undefined' ? PYQ2019S2_DATA  : null },
       { key: 'CNIP',       data: typeof CNIP_DATA       !== 'undefined' ? CNIP_DATA       : null },
       { key: 'NPTELCN',    data: typeof NPTEL_CN_DATA    !== 'undefined' ? NPTEL_CN_DATA    : null },
+      { key: 'MOCK',       data: typeof MOCK_DATA       !== 'undefined' ? MOCK_DATA       : null },
     ];
 
     sources.forEach(({ key, data }) => {
@@ -67,11 +73,12 @@ const DataLoader = (() => {
     return { questions: all, errors };
   }
 
-  /** Get counts per source */
+  /** Get counts per source (uses rawSource key for matching) */
   function getStats(questions) {
     const counts = {};
     questions.forEach(q => {
-      counts[q.source] = (counts[q.source] || 0) + 1;
+      const key = q.rawSource || q.source;
+      counts[key] = (counts[key] || 0) + 1;
     });
     return counts;
   }
@@ -79,7 +86,7 @@ const DataLoader = (() => {
   /** Filter by source (or 'all') */
   function filter(questions, source) {
     if (!source || source === 'all') return [...questions];
-    return questions.filter(q => q.source === source);
+    return questions.filter(q => q.rawSource === source);
   }
 
   /** Shuffle and pick N questions */

@@ -26,6 +26,18 @@
   border-radius: 100px;
 }
 
+.q-assignment-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--warn);
+  background: var(--warn-dim);
+  padding: 3px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(251,191,36,0.2);
+}
+
 .q-source {
   font-family: var(--mono);
   font-size: 10px;

@@ -13,73 +13,92 @@ const App = (() => {
   // ── Init ──────────────────────────────────────────
   function init() {
     const { questions, errors } = DataLoader.load();
-
     if (errors.length) console.warn('Data load warnings:', errors);
-
     allQuestions = questions;
-    renderSplashStats();
-    bindSplashControls();
+
+    renderHomeStats();
+    bindQuickLaunch();
   }
 
-  function renderSplashStats() {
-    const stats   = DataLoader.getStats(allQuestions);
-    const total   = allQuestions.length;
-    const container = document.getElementById('splashStats');
+  function renderHomeStats() {
+    const stats = DataLoader.getStats(allQuestions);
+    const total = allQuestions.length;
 
-    // Build stat cards with icons
-    const statCards = [
-      {
-        value: total,
-        label: 'Total Questions',
-        icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>'
-      },
-      ...Object.entries(stats).map(([src, n]) => ({
-        value: n,
-        label: src,
-        icon: src === 'PYQS' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M8 2v4M16 2v4M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></svg>' :
-               src === 'CNIP' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>' :
-               '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>'
-      }))
-    ];
+    // Update header badge
+    const badge = document.getElementById('totalBadge');
+    if (badge) badge.textContent = `${total} Qs`;
 
-    container.innerHTML = statCards.map((stat, i) =>
-      `<div class="stat-card" style="animation-delay:${0.45 + i * 0.05}s">
-        <div class="stat-icon">${stat.icon}</div>
-        <div class="stat-info">
-          <span class="stat-value">${stat.value}</span>
-          <span class="stat-label">${stat.label}</span>
-        </div>
-      </div>`
-    ).join('');
+    // Update hero stat
+    const heroStats = document.getElementById('heroStats');
+    if (heroStats) {
+      const firstStat = heroStats.querySelector('.hero-stat-val');
+      if (firstStat) firstStat.textContent = total;
+    }
+
+    // Update per-card counts
+    const countMap = {
+      'pyqs-count':     stats['PYQS']      || 0,
+      'pyq2019-count':  stats['PYQ2019']   || 0,
+      'pyq2019s2-count':stats['PYQ2019S2'] || 0,
+      'nptelcn-count':  stats['NPTELCN']   || 0,
+      'cnip-count':     stats['CNIP']      || 0,
+      'mock-count':     stats['MOCK']      || 0,
+      'all-count':      total,
+    };
+
+    Object.entries(countMap).forEach(([id, n]) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = `${n} Questions`;
+    });
   }
 
-  function bindSplashControls() {
+  function bindQuickLaunch() {
     // Count buttons
-    document.querySelectorAll('.config-btn').forEach(btn => {
+    document.querySelectorAll('.ql-btn').forEach(btn => {
       btn.classList.remove('active');
       if (parseInt(btn.dataset.count) === selectedCount) btn.classList.add('active');
 
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.config-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.ql-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         selectedCount = parseInt(btn.dataset.count);
       });
     });
 
     // Source filter buttons
-    document.querySelectorAll('.filter-btn').forEach(btn => {
+    document.querySelectorAll('.ql-source-btn').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.ql-source-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         selectedSource = btn.dataset.source;
       });
     });
   }
 
+  // ── Start from card click ─────────────────────────
+  function startFromCard(source, count) {
+    // Handle week-specific sources like 'CNIP-W7'
+    if (source.startsWith('CNIP-')) {
+      const week = source.replace('CNIP-', ''); // e.g. 'W7'
+      const pool = allQuestions.filter(q =>
+        q.rawSource === 'CNIP' && q.rawId.startsWith(week)
+      );
+      _launchTest(pool, count);
+    } else {
+      selectedSource = source;
+      selectedCount = count;
+      start();
+    }
+  }
+
   // ── Start test ────────────────────────────────────
   function start() {
     const pool    = DataLoader.filter(allQuestions, selectedSource);
-    testQuestions = DataLoader.sample(pool, selectedCount);
+    _launchTest(pool, selectedCount);
+  }
+
+  function _launchTest(pool, count) {
+    testQuestions = DataLoader.sample(pool, count);
     userAnswers   = {};
 
     if (testQuestions.length === 0) {
@@ -87,7 +106,6 @@ const App = (() => {
       return;
     }
 
-    // Request fullscreen on mobile devices
     if (window.innerWidth <= 640 && document.documentElement.requestFullscreen) {
       document.documentElement.requestFullscreen().catch(() => {});
     }
@@ -134,30 +152,31 @@ const App = (() => {
 
   // ── Submit Popup ──────────────────────────────────
   function showSubmitPopup() {
-    const answered = Object.keys(userAnswers).length;
-    const total = testQuestions.length;
+    const answered  = Object.keys(userAnswers).length;
+    const total     = testQuestions.length;
     const remaining = total - answered;
-    const skipped = testQuestions.filter((q, i) => !userAnswers[i]).length;
+    const progress  = Math.round((answered / total) * 100);
+
+    const statsHtml = remaining > 0 ? `
+      <div class="popup-stat answered">
+        <div class="popup-stat-value">${answered}</div>
+        <div class="popup-stat-label">Answered</div>
+      </div>
+      <div class="popup-stat remaining">
+        <div class="popup-stat-value">${remaining}</div>
+        <div class="popup-stat-label">Remaining</div>
+      </div>
+    ` : `
+      <div class="popup-stat answered">
+        <div class="popup-stat-value">${answered}</div>
+        <div class="popup-stat-label">All Answered</div>
+      </div>
+    `;
 
     document.getElementById('popupAnswered').textContent = answered;
     document.getElementById('popupTotal').textContent = total;
-
-    const popupStats = document.getElementById('popupStats');
-    popupStats.innerHTML = `
-      <div class="popup-stat answered">
-        <span class="popup-stat-value">${answered}</span>
-        <span class="popup-stat-label">Answered</span>
-      </div>
-      <div class="popup-stat remaining">
-        <span class="popup-stat-value">${remaining}</span>
-        <span class="popup-stat-label">Remaining</span>
-      </div>
-      ${skipped > 0 ? `
-      <div class="popup-stat skipped">
-        <span class="popup-stat-value">${skipped}</span>
-        <span class="popup-stat-label">Skipped</span>
-      </div>` : ''}
-    `;
+    document.getElementById('popupProgress').style.width = `${progress}%`;
+    document.getElementById('popupStats').innerHTML = statsHtml;
 
     document.getElementById('submitPopup').classList.remove('hidden');
   }
@@ -174,14 +193,12 @@ const App = (() => {
   // ── Submit ────────────────────────────────────────
   function submit() {
     const unanswered = testQuestions.length - Object.keys(userAnswers).length;
-
     if (unanswered > 0) {
       if (!confirm(`${unanswered} question(s) unanswered. Submit anyway?`)) return;
     }
 
     testElapsed = Timer.stop();
 
-    // Reveal all unanswered
     testQuestions.forEach((q, i) => {
       if (!userAnswers[i]) {
         const card = document.getElementById(`qcard-${i}`);
@@ -192,77 +209,95 @@ const App = (() => {
     showResults();
   }
 
-  // ── Results ───────────────────────────────────────
+  // Results
   function showResults() {
-    let correct   = 0;
-    let incorrect = 0;
-    let skipped   = 0;
+    let correct = 0, incorrect = 0, skipped = 0;
 
     testQuestions.forEach((q, i) => {
-      const a = userAnswers[i];
-      if (!a)                      skipped++;
-      else if (a === q.correctAnswer) correct++;
-      else                          incorrect++;
+      const userAnswer = userAnswers[i];
+      if (!userAnswer) {
+        skipped++;
+      } else if (userAnswer === q.correctAnswer) {
+        correct++;
+      } else {
+        incorrect++;
+      }
     });
 
     const total = testQuestions.length;
-    const pct   = Math.round((correct / total) * 100);
+    const pct = Math.round((correct / total) * 100);
+    const answered = correct + incorrect;
 
-    document.getElementById('scorePct').textContent   = `${pct}%`;
-    document.getElementById('resCorrect').textContent  = correct;
+    // Calculate performance metrics
+    const accuracy = answered > 0 ? Math.round((correct / answered) * 100) : 0;
+    const avgTimePerQuestion = answered > 0 ? Math.round(testElapsed / answered) : 0;
+
+    // Update subtitle based on performance
+    let subtitle = '';
+    if (pct >= 80) {
+      subtitle = 'Outstanding performance! You\'ve mastered this material.';
+    } else if (pct >= 60) {
+      subtitle = 'Good job! Review the incorrect answers to improve further.';
+    } else if (pct >= 40) {
+      subtitle = 'Keep practicing. Focus on understanding the concepts better.';
+    } else {
+      subtitle = 'Don\'t give up! Review the material and try again.';
+    }
+
+    document.getElementById('resCorrect').textContent   = correct;
     document.getElementById('resIncorrect').textContent = incorrect;
-    document.getElementById('resSkipped').textContent  = skipped;
-    document.getElementById('resTime').textContent     = Timer.formatFriendly(testElapsed);
+    document.getElementById('resSkipped').textContent   = skipped;
+    document.getElementById('resTime').textContent      = Timer.formatFriendly(testElapsed);
+    document.getElementById('scorePct').textContent      = `${pct}%`;
     document.getElementById('resultsTitle').textContent =
-      pct >= 80 ? '🎉 Excellent Work!' :
-      pct >= 60 ? '✅ Good Job!' :
-      pct >= 40 ? '📚 Keep Practicing' : '💪 Keep Going!';
+      pct >= 80 ? 'Excellent Work!' :
+      pct >= 60 ? 'Good Job!' :
+      pct >= 40 ? 'Keep Practicing' : 'Keep Going!';
+    document.getElementById('resultsSubtitle').textContent = subtitle;
+    document.getElementById('perfAccuracy').textContent = `${accuracy}%`;
+    document.getElementById('perfAvgTime').textContent = avgTimePerQuestion > 60 ? `${Math.floor(avgTimePerQuestion / 60)}m ${avgTimePerQuestion % 60}s` : `${avgTimePerQuestion}s`;
 
-    // Badge
     const badge = document.getElementById('resultsBadge');
-    badge.textContent  = pct >= 60 ? 'PASSED' : 'NEEDS WORK';
-    badge.className    = `results-badge ${pct >= 80 ? 'great' : pct >= 60 ? 'pass' : 'fail'}`;
+    badge.textContent = pct >= 60 ? 'PASSED' : 'NEEDS WORK';
+    badge.className   = `results-badge ${pct >= 80 ? 'great' : pct >= 60 ? 'pass' : 'fail'}`;
 
-    // Animate ring
     const ring = document.getElementById('ringFill');
     const circumference = 502;
-    const offset = circumference - (pct / 100) * circumference;
-    ring.style.strokeDashoffset = offset;
+    ring.style.strokeDashoffset = circumference - (pct / 100) * circumference;
     ring.className = `ring-fill ${pct >= 80 ? 'correct-great' : pct >= 60 ? 'correct-pass' : 'incorrect-fail'}`;
 
     showScreen('resultsScreen');
   }
 
-  // ── Review ────────────────────────────────────────
+  // Review
   function reviewAnswers() {
     Review.init(testQuestions, userAnswers);
     showScreen('reviewScreen');
     Review.render();
   }
 
-  function backToResults() {
-    showScreen('resultsScreen');
-  }
+  function backToResults() { showScreen('resultsScreen'); }
 
   // ── New test ──────────────────────────────────────
   function newTest() {
     Timer.reset();
-    showScreen('splashScreen');
+    showScreen('homeScreen');
   }
 
   // ── Go Home ───────────────────────────────────────
   function goHome() {
     if (confirm('Are you sure you want to leave? Your progress will be lost.')) {
       Timer.reset();
-      showScreen('splashScreen');
+      showScreen('homeScreen');
     }
   }
 
   // ── Screen management ─────────────────────────────
   function showScreen(id) {
-    const screens = ['splashScreen', 'testScreen', 'resultsScreen', 'reviewScreen'];
+    const screens = ['homeScreen', 'testScreen', 'resultsScreen', 'reviewScreen'];
     screens.forEach(s => {
       const el = document.getElementById(s);
+      if (!el) return;
       if (s === id) {
         el.classList.remove('hidden');
         el.classList.add('entering');
@@ -271,13 +306,11 @@ const App = (() => {
         el.classList.add('hidden');
       }
     });
-
-    // Scroll to top
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
   // ── Boot ──────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', init);
 
-  return { start, submit, showSubmitPopup, hideSubmitPopup, confirmSubmit, reviewAnswers, backToResults, newTest, goHome };
+  return { start, startFromCard, submit, showSubmitPopup, hideSubmitPopup, confirmSubmit, reviewAnswers, backToResults, newTest, goHome };
 })();

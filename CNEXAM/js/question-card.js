@@ -21,6 +21,7 @@ const QuestionCard = (() => {
     card.innerHTML = `
       <div class="q-meta">
         <span class="q-num">Q${index + 1}</span>
+        ${q.isAssignment ? `<span class="q-assignment-badge">WEEKLY ASSIGNMENT</span>` : ''}
         <span class="q-source">${q.source}</span>
         ${q.topic ? `<span class="q-topic">${q.topic}</span>` : ''}
         <span class="q-result-badge" id="badge-${index}"></span>
@@ -180,6 +181,7 @@ const QuestionCard = (() => {
     card.innerHTML = `
       <div class="q-meta">
         <span class="q-num">Q${index + 1}</span>
+        ${q.isAssignment ? `<span class="q-assignment-badge">WEEKLY ASSIGNMENT</span>` : ''}
         <span class="q-source">${q.source}</span>
         ${q.topic ? `<span class="q-topic">${q.topic}</span>` : ''}
         <span class="q-result-badge ${isSkipped ? 'show-skip' : isCorrect ? 'show-correct' : 'show-wrong'}">

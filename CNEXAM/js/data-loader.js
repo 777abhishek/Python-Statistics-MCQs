@@ -6,24 +6,39 @@
 const DataLoader = (() => {
 
   /** Normalize a single question from any source */
+  function normalizeKeyToIndex(key) {
+    const map = { a: 0, b: 1, c: 2, d: 3, e: 4, f: 5 };
+    if (!key || typeof key !== 'string') return undefined;
+    return map[key.toLowerCase()];
+  }
+
   function normalize(q, source) {
     // Options: support both array and object formats
     let options;
     if (Array.isArray(q.options)) {
       options = q.options;
-    } else {
+    } else if (q.options && typeof q.options === 'object') {
       options = Object.values(q.options);
+    } else {
+      throw new Error('Options must be an array or object');
     }
 
     // Correct answer: support both string value and key (a/b/c/d)
     let correctAnswer;
-    if (!Array.isArray(q.options) && q.correct_answer && q.correct_answer.length === 1) {
-      // It's a key like 'a', 'b', 'c', 'd'
-      correctAnswer = q.options[q.correct_answer];
+    const keyIndex = q.correct_answer ? normalizeKeyToIndex(q.correct_answer) : undefined;
+    if (keyIndex !== undefined && options[keyIndex] !== undefined) {
+      correctAnswer = options[keyIndex];
     } else if (q.answer) {
       correctAnswer = q.answer;
     } else if (q.correct_answer) {
       correctAnswer = q.correct_answer;
+    }
+
+    if (typeof correctAnswer === 'string') {
+      correctAnswer = correctAnswer.trim();
+    }
+    if (!correctAnswer) {
+      throw new Error('Missing or invalid correct answer');
     }
 
     const isAssignment = String(q.id).startsWith('W');

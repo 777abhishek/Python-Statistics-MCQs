@@ -8,11 +8,12 @@ const QuestionCard = (() => {
 
   /**
    * Create a question card element.
-   * @param {Object} q         - Normalized question object
-   * @param {number} index     - 0-based index in test
-   * @param {Function} onAnswer - Callback(index, answer, isCorrect)
+   * @param {Object} q                  - Normalized question object
+   * @param {number} index              - 0-based index in test
+   * @param {Function} onAnswer         - Callback(index, answer, isCorrect)
+   * @param {boolean} hideAnswersOnSelect - If true, suppress correct/wrong reveal on option select
    */
-  function create(q, index, onAnswer) {
+  function create(q, index, onAnswer, hideAnswersOnSelect = false) {
     const card = document.createElement('div');
     card.className = 'q-card';
     card.id = `qcard-${index}`;
@@ -54,14 +55,14 @@ const QuestionCard = (() => {
       label.addEventListener('click', () => {
         if (label.classList.contains('locked')) return;
         input.checked = true;
-        handleAnswer(card, q, index, i, onAnswer);
+        handleAnswer(card, q, index, i, onAnswer, hideAnswersOnSelect);
       });
 
       label.addEventListener('keydown', e => {
         if ((e.key === 'Enter' || e.key === ' ') && !label.classList.contains('locked')) {
           e.preventDefault();
           input.checked = true;
-          handleAnswer(card, q, index, i, onAnswer);
+          handleAnswer(card, q, index, i, onAnswer, hideAnswersOnSelect);
         }
       });
     });
@@ -78,15 +79,29 @@ const QuestionCard = (() => {
     return card;
   }
 
+  function normalizeText(value) {
+    if (typeof value !== 'string') return value;
+    return value.trim().replace(/\s+/g, ' ');
+  }
+
   function showAnswer(card, q, index) {
     const opts = card.querySelectorAll('.q-option');
 
     // Mark correct answer with highlight (but don't lock)
     opts.forEach((o, i) => {
-      if (q.options[i] === q.correctAnswer) {
+      if (normalizeText(q.options[i]) === normalizeText(q.correctAnswer)) {
         o.classList.add('answer-revealed');
       }
     });
+
+    // If the user has already selected a wrong option, mark it as wrong
+    const selectedOption = Array.from(opts).find(o => o.querySelector('input')?.checked);
+    if (selectedOption && !selectedOption.classList.contains('answer-revealed')) {
+      const selectedIndex = Array.from(opts).indexOf(selectedOption);
+      if (normalizeText(q.options[selectedIndex]) !== normalizeText(q.correctAnswer)) {
+        selectedOption.classList.add('wrong-pick');
+      }
+    }
 
     // Show explanation
     const expl = card.querySelector('.q-explanation');
@@ -96,18 +111,24 @@ const QuestionCard = (() => {
     showBadge(card, index, 'revealed');
   }
 
-  function handleAnswer(card, q, index, selectedIndex, onAnswer) {
+  function handleAnswer(card, q, index, selectedIndex, onAnswer, hideAnswersOnSelect) {
     const opts = card.querySelectorAll('.q-option');
     const selected = opts[selectedIndex];
     const selectedValue = q.options[selectedIndex];
-    const isCorrect = selectedValue === q.correctAnswer;
+    const isCorrect = normalizeText(selectedValue) === normalizeText(q.correctAnswer);
 
     // Lock all options
     opts.forEach(o => o.classList.add('locked'));
 
+    if (hideAnswersOnSelect) {
+      selected.classList.add('selected');
+      onAnswer(index, selectedValue, isCorrect);
+      return;
+    }
+
     // Mark correct answer
     opts.forEach((o, i) => {
-      if (q.options[i] === q.correctAnswer) {
+      if (normalizeText(q.options[i]) === normalizeText(q.correctAnswer)) {
         o.classList.add('correct');
       }
     });
@@ -152,12 +173,12 @@ const QuestionCard = (() => {
 
     opts.forEach((o, i) => {
       o.classList.add('locked');
-      if (q.options[i] === q.correctAnswer) o.classList.add('correct');
+      if (normalizeText(q.options[i]) === normalizeText(q.correctAnswer)) o.classList.add('correct');
     });
 
     if (userAnswer) {
       opts.forEach((o, i) => {
-        if (q.options[i] === userAnswer && userAnswer !== q.correctAnswer) {
+        if (normalizeText(q.options[i]) === normalizeText(userAnswer) && normalizeText(userAnswer) !== normalizeText(q.correctAnswer)) {
           o.classList.add('selected', 'wrong-pick');
         }
       });
@@ -171,7 +192,7 @@ const QuestionCard = (() => {
 
   /** Create a read-only review card */
   function createReview(q, index, userAnswer) {
-    const isCorrect = userAnswer === q.correctAnswer;
+    const isCorrect = normalizeText(userAnswer) === normalizeText(q.correctAnswer);
     const isSkipped = !userAnswer;
 
     const card = document.createElement('div');
@@ -192,8 +213,8 @@ const QuestionCard = (() => {
       <div class="q-options">
         ${q.options.map((opt, i) => {
           let cls = 'q-option locked';
-          if (opt === q.correctAnswer) cls += ' correct';
-          else if (opt === userAnswer) cls += ' selected wrong-pick';
+          if (normalizeText(opt) === normalizeText(q.correctAnswer)) cls += ' correct';
+          else if (normalizeText(opt) === normalizeText(userAnswer)) cls += ' selected wrong-pick';
           return `
             <div class="${cls}">
               <span class="q-option-dot"></span>

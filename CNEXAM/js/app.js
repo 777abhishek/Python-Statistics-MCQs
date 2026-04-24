@@ -8,7 +8,17 @@ const App = (() => {
   let userAnswers    = {};
   let selectedCount  = 50;
   let selectedSource = 'all';
+  let hideAnswersOnSelect = false;
   let testElapsed    = 0;
+
+  function setHideAnswers(value) {
+    hideAnswersOnSelect = Boolean(value);
+  }
+
+  function normalizeText(value) {
+    if (typeof value !== 'string') return value;
+    return value.trim().replace(/\s+/g, ' ');
+  }
 
   // ── Init ──────────────────────────────────────────
   function init() {
@@ -120,7 +130,7 @@ const App = (() => {
     container.innerHTML = '';
 
     testQuestions.forEach((q, i) => {
-      const card = QuestionCard.create(q, i, onAnswer);
+      const card = QuestionCard.create(q, i, onAnswer, hideAnswersOnSelect);
       container.appendChild(card);
     });
 
@@ -200,7 +210,7 @@ const App = (() => {
     testElapsed = Timer.stop();
 
     testQuestions.forEach((q, i) => {
-      if (!userAnswers[i]) {
+      if (!(i in userAnswers)) {
         const card = document.getElementById(`qcard-${i}`);
         if (card) QuestionCard.reveal(card, q, i, null);
       }
@@ -214,10 +224,14 @@ const App = (() => {
     let correct = 0, incorrect = 0, skipped = 0;
 
     testQuestions.forEach((q, i) => {
-      const userAnswer = userAnswers[i];
-      if (!userAnswer) {
+      if (!(i in userAnswers)) {
         skipped++;
-      } else if (userAnswer === q.correctAnswer) {
+        return;
+      }
+      const userAnswer = userAnswers[i];
+      const expected = normalizeText(q.correctAnswer);
+      const actual = normalizeText(userAnswer);
+      if (actual === expected) {
         correct++;
       } else {
         incorrect++;
@@ -312,5 +326,5 @@ const App = (() => {
   // ── Boot ──────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', init);
 
-  return { start, startFromCard, submit, showSubmitPopup, hideSubmitPopup, confirmSubmit, reviewAnswers, backToResults, newTest, goHome };
+  return { start, startFromCard, submit, showSubmitPopup, hideSubmitPopup, confirmSubmit, reviewAnswers, backToResults, newTest, goHome, setHideAnswers };
 })();

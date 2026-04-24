@@ -623,11 +623,11 @@ const PYQS_DATA = [
     "options": [
       "802.11",
       "802.5",
-      "802.8",
+      "802.15",
       "None of the given"
     ],
     "answer": "802.15",
-    "explanation": "Bluetooth is standardized under IEEE 802.15. Note: 802.11 is WiFi, 802.5 is Token Ring. The answer key for this paper suggests 802.15 (none of the given is closest correct)."
+    "explanation": "Bluetooth is standardized under IEEE 802.15. Note: 802.11 is WiFi, 802.5 is Token Ring. 802.15 is the correct Bluetooth standard."
   },
   {
     "id": 53,
@@ -710,8 +710,8 @@ const PYQS_DATA = [
       "150kbps to 2Mbps",
       "None of the given"
     ],
-    "answer": "144kbps to 2Mbps",
-    "explanation": "3G networks provide data rates from 144 Kbps (vehicular) to 2 Mbps (stationary). The closest option is 150kbps to 2Mbps."
+    "answer": "150kbps to 2Mbps",
+    "explanation": "3G networks provide data rates from 144 kbps to 2 Mbps. Of the given options, 150kbps to 2Mbps is the closest match."
   },
   {
     "id": 60,

@@ -93,22 +93,23 @@ const App = (() => {
       const pool = allQuestions.filter(q =>
         q.rawSource === 'CNIP' && q.rawId.startsWith(week)
       );
-      _launchTest(pool, count);
+      _launchTest(pool, count, false);
     } else {
       selectedSource = source;
       selectedCount = count;
-      start();
+      const pool = DataLoader.filter(allQuestions, selectedSource);
+      _launchTest(pool, selectedCount, false);
     }
   }
 
   // ── Start test ────────────────────────────────────
   function start() {
     const pool    = DataLoader.filter(allQuestions, selectedSource);
-    _launchTest(pool, selectedCount);
+    _launchTest(pool, selectedCount, true);
   }
 
-  function _launchTest(pool, count) {
-    testQuestions = DataLoader.sample(pool, count);
+  function _launchTest(pool, count, shuffle = true) {
+    testQuestions = DataLoader.sample(pool, count, shuffle);
     userAnswers   = {};
 
     if (testQuestions.length === 0) {

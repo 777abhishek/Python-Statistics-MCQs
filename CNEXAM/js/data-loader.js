@@ -104,9 +104,12 @@ const DataLoader = (() => {
     return questions.filter(q => q.rawSource === source);
   }
 
-  /** Shuffle and pick N questions */
-  function sample(questions, n) {
-    const arr = [...questions].sort(() => Math.random() - 0.5);
+  /** Pick N questions, optionally shuffle */
+  function sample(questions, n, shuffle = true) {
+    let arr = [...questions];
+    if (shuffle) {
+      arr.sort(() => Math.random() - 0.5);
+    }
     return arr.slice(0, Math.min(n, arr.length));
   }
 
